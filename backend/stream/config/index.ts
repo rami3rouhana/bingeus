@@ -7,8 +7,8 @@ if (process.env.npm_lifecycle_event !== "prod") {
     dotEnv.config();
 }
 
-module.exports = {
-    PORT: process.env.PORT,
+export default {
+    PORT: process.env.PORT as unknown as number,
     DB_URL: process.env.MONGODB_URI,
     APP_SECRET: process.env.APP_SECRET,
 };
