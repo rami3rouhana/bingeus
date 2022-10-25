@@ -1,9 +1,9 @@
-import { ValidateSignature, IGetUserAuthInfoRequest } from "../../utils";
+import { ValidateSignature } from "../../utils";
 import { Request, Response, NextFunction } from "express";
 
 export const validateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const isAuthorized = ValidateSignature(req as IGetUserAuthInfoRequest);
+        const isAuthorized = ValidateSignature(req);
 
         if (isAuthorized) {
             return next();

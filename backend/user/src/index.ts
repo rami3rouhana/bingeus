@@ -7,9 +7,10 @@ import expressApp from './express-app';
 declare global {
     namespace Express {
         interface Request {
+            jwt: string;
             user: {
-                _id:string;
-                email:string;
+                _id: string;
+                email: string;
             }
         }
     }
