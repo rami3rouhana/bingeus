@@ -1,10 +1,12 @@
 import bcrypt from "bcrypt";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import config from "config";
 import { Request } from "express";
 
-export interface IGetUserAuthInfoRequest extends Request {
-  jwt: string | JwtPayload
+
+interface userCredentials {
+  _id: string;
+  email: string;
 }
 
 
@@ -24,13 +26,13 @@ export const ValidatePassword = async (
 export const GenerateSignature = (payload: object) => {
   return jwt.sign(payload, config.get<string>('APP_SECRET'), { expiresIn: "1d" });
 }
-export const ValidateSignature = (req: IGetUserAuthInfoRequest) => {
+export const ValidateSignature = (req: Request) => {
 
   const signature = req?.get("Authorization");
 
   if (signature) {
     const payload = jwt.verify(signature.split(" ")[1], config.get<string>('APP_SECRET'));
-    req.jwt = payload;
+    req.user = payload as userCredentials;
     return true;
   }
 

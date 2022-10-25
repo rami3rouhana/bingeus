@@ -1,4 +1,4 @@
-import { DocumentDefinition } from 'mongoose';
+import { DocumentDefinition, ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt';
 import UserModel, { UserDocument } from '../database/models/user.model';
 import { ValidatePassword, GenerateSignature } from "../utils";
@@ -30,15 +30,45 @@ export const editUser = async (input: editUser, email: string) => {
         input.name ? await user?.update({ name: input.name }) : false;
         input.image ? await user?.update({ image: input.image }) : false;
 
-        return {message:"Succesfully upadated"};
+        return { message: "Succesfully upadated" };
     } catch (e) {
         throw new Error(e)
     }
 }
 
-export const getUser = async (email: string) => {
+export const getUser = async (_id: string) => {
     try {
-        return await UserModel.findOne({ email });
+        return await UserModel.findOne({ _id });
+    } catch (e) {
+        throw new Error(e)
+    }
+}
+
+export const toogleblock = async (_id: string, blockedUser: { userId: ObjectId, name: string, image: string }) => {
+    try {
+        const user = await UserModel.findById(_id);
+
+        if (user?.blockedList) {
+            let exist = false;
+            user?.blockedList.filter(user => {
+                if (user.userId === blockedUser.userId) {
+                    exist = true;
+                    return true;
+                }
+            });
+            if (exist) {
+                console.log(user);
+                await user.save();
+                return false
+            } else {
+                user?.blockedList.push(blockedUser);
+                console.log(user);
+                await user.save();
+                return true
+            }
+        } else {
+
+        }
     } catch (e) {
         throw new Error(e)
     }

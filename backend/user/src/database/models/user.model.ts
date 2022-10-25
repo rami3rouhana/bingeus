@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, ObjectId } from "mongoose";
 import bcrypt from 'bcrypt';
 
 export interface UserInput {
@@ -6,6 +6,12 @@ export interface UserInput {
     name: string;
     password: string;
     salt: string;
+    image?: string;
+    blockedList?: [{
+        userId: ObjectId,
+        name: string,
+        image: string
+    }]
 }
 
 export interface UserDocument extends UserInput, mongoose.Document {
@@ -21,11 +27,9 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true },
         salt: { type: String },
         image: { type: String },
-        blockedList: [{
-            userId: { type: String },
-            name: { type: String },
-            image: { type: String }
-        }]
+        blockedList: [
+            { type: Schema.Types.ObjectId, ref: 'blocked', require: true }
+        ]
     },
     {
         toJSON: {
