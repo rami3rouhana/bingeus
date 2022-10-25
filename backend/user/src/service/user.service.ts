@@ -1,6 +1,6 @@
-import { DocumentDefinition, ObjectId } from 'mongoose';
+import { DocumentDefinition, ObjectId, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
-import UserModel, { UserDocument } from '../database/models/user.model';
+import UserModel, { UserDocument, userBlock } from '../database/models/user.model';
 import { ValidatePassword, GenerateSignature } from "../utils";
 
 export const createUser = async (input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt' | 'salt'>>) => {
@@ -47,22 +47,20 @@ export const getUser = async (_id: string) => {
 export const toogleblock = async (_id: string, blockedUser: { userId: ObjectId, name: string, image: string }) => {
     try {
         const user = await UserModel.findById(_id);
-
         if (user?.blockedList) {
+            const removeUser = user?.blockedList as unknown as Types.DocumentArray<userBlock>
             let exist = false;
-            user?.blockedList.filter(user => {
-                if (user.userId === blockedUser.userId) {
+            user?.blockedList.map(u => {
+                if (u.userId === blockedUser.userId && user?.blockedList) {
                     exist = true;
-                    return true;
+                    removeUser.pull({ userId: u.userId });
                 }
             });
             if (exist) {
-                console.log(user);
                 await user.save();
                 return false
             } else {
                 user?.blockedList.push(blockedUser);
-                console.log(user);
                 await user.save();
                 return true
             }
