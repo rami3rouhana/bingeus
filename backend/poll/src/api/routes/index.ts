@@ -3,10 +3,11 @@ import { creatrePollHandler, RemovePollHandler, VoteHandler } from "../../contro
 import { PollSchema } from "../../database/schema/poll.schema";
 import { validateUser } from '../middleware/validateUser';
 import { validateResource } from '../middleware/validateResource';
+import { Channel } from "amqplib";
 
-export default async (app: Express) => {
+export default async (app: Express, channel: Channel) => {
 
-    app.post('/poll', validateUser, validateResource(PollSchema), creatrePollHandler);
+    app.post('/poll', validateUser, validateResource(PollSchema), creatrePollHandler(channel));
 
     app.delete('/poll/:id', validateUser, RemovePollHandler);
 
