@@ -7,13 +7,11 @@ import { Channel } from "amqplib";
 export const validateResource = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
 
     try {
-
         schema.parse({
             body: req.body,
             query: req.query,
             params: req.params
         })
-
         next();
 
     } catch (e: any) {

@@ -27,7 +27,7 @@ export default async (app: Express, server: http.Server<typeof http.IncomingMess
         auth: false
     });
 
-    services(app, io, service.channel, service.callback);
+    services(app, io, service);
 
 }
 

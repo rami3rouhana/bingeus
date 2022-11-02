@@ -10,13 +10,13 @@ import { SubscribeMessage } from "../../utils";
 
 export default async (app: Express, channel: Channel) => {
 
-    app.get('/theater/:id', validateUser, validateResource(channel), getTheaterHandler);
+    app.get('/theater/:id', getTheaterHandler);
 
     app.post('/theater', validateUser, validateResource(createUserTheaterSchema), createTheaterHandler);
 
     app.put('/theater/:id', validateUser, validateResource(editUserTheaterSchema), editTheaterHandler);
 
-    app.put('/block', validateUser, validateResource(BlockSchema), blockUserHandler);
+    app.put('/block/:id', validateResource(BlockSchema), blockUserHandler);
 
     app.get('/playlist/:id', validateUser, GetPlaylistHandler);
 
