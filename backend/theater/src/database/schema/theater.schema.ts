@@ -71,16 +71,10 @@ export const CreatePlaylistSchema = object({
 })
 
 export const BlockSchema = object({
-  body: object({
-    userId: string({
-      required_error: "Id is required",
-    }),
-    name: string({
-      required_error: "Name is required",
-    }),
-    image: string({
-      required_error: "Image link required",
-    }),
+  params: object({
+    id: string({
+      required_error: "User is required",
+    })
   })
 })
 
