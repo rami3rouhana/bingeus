@@ -1,6 +1,6 @@
 import mongoose, { DocumentDefinition, Types } from 'mongoose';
 import config from 'config';
-import TheaterModel, { TheaterDocument, userBlock, theaterVote } from '../database/models/theater.model';
+import TheaterModel, { TheaterDocument, theaterVote } from '../database/models/theater.model';
 import { GenerateSignature, CreateChannel, SubscribeMessage, PublishMessage } from "../utils";
 
 export const createTheater = async (input: DocumentDefinition<Omit<TheaterDocument, 'createdAt' | 'updatedAt' | 'chatRoom' | 'polls' | 'playlist' | 'blockedList'>>) => {
@@ -41,11 +41,10 @@ export const getTheater = async (adminId: string) => {
     }
 }
 
-export const getUserTheaters = async (theaterId: string, channel: any) => {
+export const getUserTheaters = async (theaterId: string) => {
     try {
+        console.log('hy')
         const theater = await TheaterModel.findById(theaterId);
-        const payload = { payloads: theater, event: "RECEIVE_THEATER" };
-        PublishMessage(channel, config.get<string>('SOCKET_SERVICE'), JSON.stringify(payload));
         return theater;
     } catch (e) {
         throw new Error(e);
@@ -60,7 +59,7 @@ export const getAllTheaters = async () => {
     }
 }
 
-export const toogleBlock = async (_id: string, blockedUser: { userId: string, name: string, image: string }): Promise<object | undefined> => {
+export const toogleBlock = async (_id: string, userId: string): Promise<object | undefined> => {
     try {
         const theaters = await TheaterModel.find({ adminId: _id });
 
@@ -70,22 +69,25 @@ export const toogleBlock = async (_id: string, blockedUser: { userId: string, na
         let exist = false;
         if (theaters) {
             theaters.map(async theater => {
-                const removeUser = theater?.blockedList as unknown as Types.DocumentArray<userBlock>
-                theater.blockedList.map(user => {
-                    if (user.userId === blockedUser.userId) {
-                        exist = true;
-                        removeUser.pull({ userId: user.userId });
-                    }
-                });
+                if (theater.blockedList.includes(userId) === true) {
+                    exist = true;
+                    const remove = theater.blockedList as any;
+                    remove.pull(userId);
+                }
                 if (exist) {
                     await theater.save();
                     return { message: "User Unblocked" };
                 } else {
-                    theater.blockedList.push(blockedUser);
+                    theater.blockedList.push(userId);
                     await theater.save();
                     return { message: "User Blocked" };
                 }
             })
+        }
+        if (exist) {
+            return { message: "User Unblocked" };
+        } else {
+            return { message: "User Blocked" };
         }
     } catch (e) {
         throw new Error(e);
