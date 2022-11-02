@@ -16,7 +16,7 @@ export default async (app: Express, channel: Channel) => {
 
     app.put('/theater/:id', validateUser, validateResource(editUserTheaterSchema), editTheaterHandler);
 
-    app.put('/block/:id', validateResource(BlockSchema), blockUserHandler);
+    app.put('/block/:id', validateUser, validateResource(BlockSchema), blockUserHandler);
 
     app.get('/playlist/:id', validateUser, GetPlaylistHandler);
 
