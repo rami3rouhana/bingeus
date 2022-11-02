@@ -1,6 +1,5 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "config";
-import { Request } from "express";
 import amqplib, { Channel, ConsumeMessage } from "amqplib";
 
 export class userCredentials {
@@ -45,7 +44,7 @@ export const CreateChannel = async () => {
   }
 };
 
-export const PublishMessage = (channel: Channel, service, msg) => {
+export const PublishMessage = (channel: Channel, service: string, msg: string) => {
   channel.publish(config.get<string>('EXCHANGE_NAME'), service, Buffer.from(msg), {
     persistent: true
   });

@@ -1,7 +1,7 @@
-import mongoose, { DocumentDefinition, Types } from 'mongoose';
+import { DocumentDefinition } from 'mongoose';
 import config from 'config';
-import TheaterModel, { TheaterDocument, theaterVote } from '../database/models/theater.model';
-import { GenerateSignature, CreateChannel, SubscribeMessage, PublishMessage } from "../utils";
+import TheaterModel, { TheaterDocument } from '../database/models/theater.model';
+import { PublishMessage } from "../utils";
 import { Channel } from 'amqplib';
 
 export const createTheater = async (input: DocumentDefinition<Omit<TheaterDocument, 'createdAt' | 'updatedAt' | 'chatRoom' | 'polls' | 'playlist' | 'blockedList'>>) => {
@@ -81,9 +81,9 @@ export const toogleBlock = async (_id: string, userId: string, channel: Channel)
                     await theater.save();
                 }
             })
-            if(exist){
+            if (exist) {
                 return { message: "User Unblocked" };
-            }else{
+            } else {
                 const payload = { event: "BLOCK_USER", payloads: { _id, userId } }
                 PublishMessage(channel, config.get<string>("USER_SERVICE"), JSON.stringify(payload));
                 return { message: "User Blocked" };

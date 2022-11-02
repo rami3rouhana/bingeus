@@ -1,4 +1,4 @@
-import { DocumentDefinition, ObjectId, Types } from 'mongoose';
+import { DocumentDefinition, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 import UserModel, { UserDocument, userBlock } from '../database/models/user.model';
 import { ValidatePassword, GenerateSignature, PublishMessage } from "../utils";

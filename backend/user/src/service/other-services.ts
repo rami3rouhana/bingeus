@@ -1,11 +1,20 @@
 import { toogleBlock } from "./user.service";
+import { Channel } from 'amqplib';
+
+interface payload {
+    event: string,
+    payloads: {
+        _id: string,
+        userId: string
+    }
+}
 
 class services {
 
-    async SubscribeEvents(payload, channel) {
+    async SubscribeEvents(payload: string | payload, channel: Channel) {
         console.log('Triggering.... Theater Events')
 
-        payload = JSON.parse(payload)
+        payload = JSON.parse(payload as string) as payload;
 
         const { event, payloads } = payload;
 
@@ -14,14 +23,11 @@ class services {
                 case 'BLOCK_USER':
                     toogleBlock(payloads._id, payloads.userId, channel)
                     break;
-                case 'REMOVE_OFFER':
-                    // this.RemoveCompanyOffer(_id, offerId);
-                    break;
                 default:
                     break;
             }
         else
-            console.log(payloads)
+            console.log(payloads);
     }
 }
 

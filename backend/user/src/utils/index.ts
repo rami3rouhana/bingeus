@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import config from "config";
 import { Request } from "express";
 import amqplib, { Channel } from "amqplib";
+import services from "../service/other-services";
 
 
 interface userCredentials {
@@ -62,14 +63,14 @@ export const CreateChannel = async () => {
   }
 };
 
-export const PublishMessage = (channel: Channel, service, msg) => {
+export const PublishMessage = (channel: Channel, service: string, msg: string) => {
   channel.publish(config.get<string>('EXCHANGE_NAME'), service, Buffer.from(msg), {
     persistent: true
   });
   console.log("Sent: ", msg);
 };
 
-export const SubscribeMessage = async (channel: Channel, service) => {
+export const SubscribeMessage = async (channel: Channel, service: services) => {
 
   await channel.assertExchange(config.get<string>('EXCHANGE_NAME'), "direct", { durable: true });
   const q = await channel.assertQueue(config.get<string>('QUEUE_NAME'), "direct", { exclusive: true, durable: true });

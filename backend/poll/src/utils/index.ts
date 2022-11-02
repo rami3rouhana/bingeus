@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import config from "config";
 import { Request } from "express";
-
+import amqplib, { Channel } from "amqplib";
+import services from "../service/services";
 
 interface userCredentials {
   _id: string;
@@ -33,4 +34,23 @@ export const FormateData = (data: object) => {
   } else {
     throw new Error("Data Not found!");
   }
+};
+
+//Message Broker
+export const CreateChannel = async () => {
+  try {
+    const connection = await amqplib.connect(config.get<string>('MSG_QUEUE_URL'));
+    const channel = await connection.createChannel();
+    await channel.assertQueue(config.get<string>('EXCHANGE_NAME'), "direct", { durable: true });
+    return channel;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const PublishMessage = (channel: Channel, service: string, msg: string) => {
+  channel.publish(config.get<string>('EXCHANGE_NAME'), service, Buffer.from(msg), {
+    persistent: true
+  });
+  console.log("Sent: ", msg);
 };

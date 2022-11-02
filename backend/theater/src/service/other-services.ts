@@ -1,19 +1,26 @@
-import { getUserTheaters, toogleBlock } from "./theater.service";
+import { toogleBlock } from "./theater.service";
+import { Channel } from 'amqplib';
+
+interface payload {
+    event: string,
+    payloads: {
+        _id: string,
+        userId: string
+    }
+}
+
 
 class services {
 
-    async SubscribeEvents(payload, channel) {
+    async SubscribeEvents(payload: string | payload, channel: Channel) {
         console.log('Triggering.... Theater Events')
 
-        payload = JSON.parse(payload)
+        payload = JSON.parse(payload as string) as payload;
 
         const { event, payloads } = payload;
 
         if (payloads)
             switch (event) {
-                case 'GET_THEATER':
-                    getUserTheaters(payloads._id)
-                    break;
                 case 'UNBLOCK_USER':
                     toogleBlock(payloads._id, payloads.userId, channel)
                     break;
@@ -21,7 +28,7 @@ class services {
                     break;
             }
         else
-            console.log(payloads)
+            console.log(payloads);
     }
 }
 

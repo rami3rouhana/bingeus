@@ -2,10 +2,9 @@ import { Express } from 'express';
 import { Server } from "socket.io";
 import { Channel } from "amqplib";
 import logger from "../../utils/logger";
-import { PublishMessage, userCredentials, SubscribeMessage } from '../../utils';
+import { userCredentials, SubscribeMessage } from '../../utils';
 import validateSignature from '../middleware/validateUser';
 import axios from 'axios';
-import config from 'config';
 import services from './service.class';
 import fs from 'fs';
 
