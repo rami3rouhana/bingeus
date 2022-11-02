@@ -43,12 +43,16 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
             return logger.error("Theater Doesn't Exist");
         }
 
+        socket.theater = socket.handshake.auth.theater;
+
         if (theater.data.adminId === socket._id) {
             socket.admin = true;
         }
 
         if (theater.data.blockedList.includes(socket._id)) {
-            throw new Error("User is blocked");
+            socket.emit('blocked');
+            socket.disconnect();
+            return logger.error("User is blocked");
         }
 
         socket.theater = socket.handshake.auth.theater;
@@ -57,12 +61,30 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
 
         next();
     })
-    
+
     theaterIo.on('connection', (socket) => {
+
+        socket.to(socket.theater).emit('receive message', `${socket._id} Joined room ${socket.theater}`);
 
         logger.info(`admin ${socket._id} connected`);
 
         socket.emit("connected", socket._id);
+
+        socket.on("block", async (id: string) => {
+            if (socket.admin) {
+                const users = await theaterIo.fetchSockets();
+                const user = users.find((socket: any) => socket._id === id) as any;
+                if (user) {
+                    let blocked = await axios.put(`http://localhost:8002/block/${user._id}`, {}, {
+                        headers: {
+                            'Authorization': 'Bearer ' + socket.handshake.auth.token
+                        }
+                    });
+                    logger.error(blocked.data.message)
+                    user.disconnect();
+                }
+            }
+        })
 
         socket.on('chat message', (msg: string, room: string) => {
 
@@ -71,10 +93,8 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
             }
 
             if (socket._id)
-                socket.to(room).emit('receive message', msg);
+                theaterIo.to(room).emit('receive message', msg);
         });
-
-
 
         socket.on('join room', (room: string) => {
             socket.join(room);
@@ -82,6 +102,7 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
         })
 
         socket.on('disconnect', () => {
+            theaterIo.to(socket.theater).emit('receive message', `${socket._id} left room ${socket.theater}`);
             logger.error('user disconnected');
         });
     });
