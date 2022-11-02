@@ -45,12 +45,12 @@ export const editTheaterHandler = async (
 }
 
 
-export const blockUserHandler = async (
+export const blockUserHandler = (channel) => async (
     req: Request<BlockInput['params']>,
     res: Response,
 ) => {
     try {
-        const blocked = await toogleBlock(req.user._id, req.params.id);
+        const blocked = await toogleBlock(req.user._id, req.params.id, channel);
         return res.send(blocked);
     } catch (e: any) {
         logger.error(e);
