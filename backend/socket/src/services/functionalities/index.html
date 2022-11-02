@@ -25,7 +25,7 @@
   var socket = io('/theater',{
     auth: {
       theater:'63593e5753ddddc1b35bc72d',
-      token:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhbWkuMy5yb3VoYW5hQGdtYWlsLmNvbSIsIl9pZCI6IjYzNTZlNTU2NzFjY2Y2NDk5NWRhMDYwZSIsImlhdCI6MTY2NzM4MDgxNywiZXhwIjoxNjY3NDY3MjE3fQ.0A2jZlt3JWyr2jUATpW-tLu00ObMJzUzMsw0cB_SRPY'
+      token:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhbWlAZ21haWwuY29tIiwiX2lkIjoiNjM2MjRmNWEwMTMzNjc3MGMxODhiZWY2IiwiaWF0IjoxNjY3Mzg4NDEzLCJleHAiOjE2Njc0NzQ4MTN9.xSn2oVQPyfVmBQUQ7mKJ7H80MP_sHpX-ldcHjNzubxM'
     }
 });
 
@@ -48,11 +48,15 @@ socket.on('connected', data =>{
 
   socket.on('connect', () => {
 
+    socket.on('blocked',()=>{
+      socket.disconnect();
+    })
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     if (input.value) {
         room = '';
-      socket.emit('chat message', input.value,room);
+      socket.emit('block', '63624f5a01336770c188bef6');
       input.value = '';
     }
   });
