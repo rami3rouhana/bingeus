@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { CreateUserInput, ValidateUserLogin, ValidateUserEdit } from "../database/schema/user.schema";
-import { createUser, validateUser, getUser, editUser, toogleblock } from "../service/user.service";
+import { createUser, validateUser, getUser, editUser, toogleBlock } from "../service/user.service";
 import { ObjectId } from "mongoose";
+import { Channel } from 'amqplib';
 import logger from '../utils/logger';
 
 export const createUserHandler = async (
@@ -59,25 +60,16 @@ export const getProfile = async (
     }
 }
 
-export const blockUser = async (
-    req: Request,
-    res: Response,
+export const blockUser = (channel: Channel) => async (
+    req?: Request,
+    res?: Response,
 ) => {
     try {
-        const blockUser = await getUser(req.params.id);
-
-        const user = {
-            userId: blockUser?.id as ObjectId,
-            name: blockUser?.name as string,
-            image: blockUser?.image as string,
-        }
-
-        const blocked = await toogleblock(req.user._id, user);
-
-        blocked ? res.send({ message: "User Blocked" }) : res.send({ message: "User Unblocked" });
+        const blocked = await toogleBlock(req?.user._id as string, req?.params.id as string, channel);
+        res?.send(blocked);
 
     } catch (e: any) {
         logger.error(e);
-        return res.status(409).send(e.message);
+        return res?.status(409).send(e.message);
     }
 }
