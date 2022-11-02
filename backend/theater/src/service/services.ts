@@ -1,4 +1,4 @@
-import { getUserTheaters } from "./theater.service";
+import { getUserTheaters, toogleBlock } from "./theater.service";
 
 class services {
 
@@ -12,10 +12,10 @@ class services {
         if (payloads)
             switch (event) {
                 case 'GET_THEATER':
-                    getUserTheaters(payloads._id, channel)
+                    getUserTheaters(payloads._id)
                     break;
-                case 'REMOVE_OFFER':
-                    // this.RemoveCompanyOffer(_id, offerId);
+                case 'UNBLOCK_USER':
+                    toogleBlock(payloads._id, payloads.userId, channel)
                     break;
                 default:
                     break;
