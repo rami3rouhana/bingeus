@@ -5,7 +5,7 @@ import logger from "../../utils/logger";
 import { PublishMessage, userCredentials, SubscribeMessage } from '../../utils';
 import validateSignature from '../middleware/validateUser';
 import config from 'config';
-import services from '../services/socket.service';
+import services from './service.class';
 
 
 declare module 'socket.io' {

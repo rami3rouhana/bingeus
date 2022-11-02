@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import cors from 'cors';
-import services from './api/services';
+import services from './services/functionalities';
 import http from 'http';
 import { instrument } from "@socket.io/admin-ui";
 import { Server } from "socket.io";
@@ -27,7 +27,7 @@ export default async (app: Express, server: http.Server<typeof http.IncomingMess
         auth: false
     });
 
-    services(app, io, service.channel,service.callback);
+    services(app, io, service.channel, service.callback);
 
 }
 

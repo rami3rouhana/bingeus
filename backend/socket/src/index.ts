@@ -6,7 +6,6 @@ import expressApp from './express-app';
 
 const app = express();
 
-
 const server = http.createServer(app);
 
 expressApp(app, server);
