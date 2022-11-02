@@ -2,6 +2,7 @@ import mongoose, { DocumentDefinition, Types } from 'mongoose';
 import config from 'config';
 import TheaterModel, { TheaterDocument, theaterVote } from '../database/models/theater.model';
 import { GenerateSignature, CreateChannel, SubscribeMessage, PublishMessage } from "../utils";
+import { Channel } from 'amqplib';
 
 export const createTheater = async (input: DocumentDefinition<Omit<TheaterDocument, 'createdAt' | 'updatedAt' | 'chatRoom' | 'polls' | 'playlist' | 'blockedList'>>) => {
     try {
@@ -58,7 +59,7 @@ export const getAllTheaters = async () => {
     }
 }
 
-export const toogleBlock = async (_id: string, userId: string): Promise<object | undefined> => {
+export const toogleBlock = async (_id: string, userId: string, channel: Channel): Promise<object | undefined> => {
     try {
         const theaters = await TheaterModel.find({ adminId: _id });
 
@@ -75,13 +76,18 @@ export const toogleBlock = async (_id: string, userId: string): Promise<object |
                 }
                 if (exist) {
                     await theater.save();
-                    return { message: "User Unblocked" };
                 } else {
                     theater.blockedList.push(userId);
                     await theater.save();
-                    return { message: "User Blocked" };
                 }
             })
+            if(exist){
+                return { message: "User Unblocked" };
+            }else{
+                const payload = { event: "BLOCK_USER", payloads: { _id, userId } }
+                PublishMessage(channel, config.get<string>("USER_SERVICE"), JSON.stringify(payload));
+                return { message: "User Blocked" };
+            }
         }
         if (exist) {
             return { message: "User Unblocked" };
