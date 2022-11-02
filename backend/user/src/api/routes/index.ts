@@ -3,8 +3,11 @@ import { createUserHandler, validateUserHandler, editProfile, getProfile, blockU
 import { createUserSchema, loginUserSchema, editUserSchema } from "../../database/schema/user.schema";
 import { validateUser } from '../middleware/validateUser';
 import { validateResource } from '../middleware/validateResource';
+import { SubscribeMessage } from "../../utils";
+import  services from "../../service/services";
+import { Channel } from "amqplib";
 
-export default async (app: Express) => {
+export default async (app: Express, channel: Channel) => {
 
     app.post('/signup', validateResource(createUserSchema), createUserHandler);
 
@@ -12,8 +15,12 @@ export default async (app: Express) => {
 
     app.get('/profile', validateUser, getProfile);
 
-    app.put('/profile', validateUser, validateResource(editUserSchema), editProfile);
+    app.put('/profile', validateUser, validateResource(editUserSchema), editProfile);   
 
-    app.get('/block/:id', validateUser, blockUser);
+    app.get('/block/:id', validateUser, blockUser(channel));
+
+    const service = new services();
+
+    SubscribeMessage(channel, service);
 
 }
