@@ -43,7 +43,6 @@ export const getTheater = async (adminId: string) => {
 
 export const getUserTheaters = async (theaterId: string) => {
     try {
-        console.log('hy')
         const theater = await TheaterModel.findById(theaterId);
         return theater;
     } catch (e) {
