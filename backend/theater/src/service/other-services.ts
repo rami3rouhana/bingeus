@@ -1,4 +1,4 @@
-import { toogleBlock } from "./theater.service";
+import { toogleBlock, addVote } from "./theater.service";
 import { Channel } from 'amqplib';
 
 interface payload {
@@ -23,6 +23,9 @@ class services {
             switch (event) {
                 case 'UNBLOCK_USER':
                     toogleBlock(payloads._id, payloads.userId, channel)
+                    break;
+                case 'ADD_POLL':
+                    addVote(payloads._id, payloads.userId, channel)
                     break;
                 default:
                     break;
