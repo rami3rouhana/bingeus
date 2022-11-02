@@ -1,12 +1,19 @@
-import { DocumentDefinition, Types } from 'mongoose';
+import { Channel } from 'amqplib';
+import { DocumentDefinition } from 'mongoose';
+import config from 'config';
 import PollModel, { PollDocument } from '../database/models/poll.model';
-import { GenerateSignature } from "../utils";
+import { PublishMessage } from "../utils";
 
 
-export const createPoll = async (input: DocumentDefinition<Omit<PollDocument, 'createdAt' | 'updatedAt' | 'usersId'>>) => {
+export const createPoll = async (input: DocumentDefinition<Omit<PollDocument, 'createdAt' | 'updatedAt' | 'usersId'>>, channel?: Channel) => {
     try {
         const poll = await PollModel.create(input);
-        return { poll, message: "Poll Created" };
+        const payload = {
+            event: "ADD_POLL",
+            payloads: poll
+        }
+        PublishMessage(channel, config.get<string>('THEATER_SERVICE'), JSON.stringify(payload));
+        return { message: "Poll Created" };
     } catch (e) {
         throw new Error(e);
     }
