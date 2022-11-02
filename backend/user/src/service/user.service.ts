@@ -1,7 +1,9 @@
 import { DocumentDefinition, ObjectId, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 import UserModel, { UserDocument, userBlock } from '../database/models/user.model';
-import { ValidatePassword, GenerateSignature } from "../utils";
+import { ValidatePassword, GenerateSignature, PublishMessage } from "../utils";
+import { Channel } from 'amqplib';
+import config from 'config';
 
 export const createUser = async (input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt' | 'salt'>>) => {
     try {
@@ -44,25 +46,35 @@ export const getUser = async (_id: string) => {
     }
 }
 
-export const toogleblock = async (_id: string, blockedUser: { userId: ObjectId, name: string, image: string }) => {
+export const toogleBlock = async (_id?: string, userId?: string, channel?: Channel) => {
     try {
         const user = await UserModel.findById(_id);
+        const userBlock = await UserModel.findById(userId);
+        if (!userBlock) {
+            return { message: "User Doesn't exist" }
+        }
         if (user?.blockedList) {
             const removeUser = user?.blockedList as unknown as Types.DocumentArray<userBlock>
             let exist = false;
             user?.blockedList.map(u => {
-                if (u.userId === blockedUser.userId && user?.blockedList) {
+                if (u.userId.toString() === userId && user?.blockedList) {
                     exist = true;
-                    removeUser.pull({ userId: u.userId });
+                    removeUser.pull({ userId: userBlock._id });
                 }
             });
             if (exist) {
                 await user.save();
-                return false
+                const payload = { event: "UNBLOCK_USER", payloads: { _id, userId } };
+                PublishMessage(channel, config.get<string>("THEATER_SERVICE"), JSON.stringify(payload));
+                return { message: "User Unblocked" };
             } else {
-                user?.blockedList.push(blockedUser);
+                removeUser.push({
+                    userId: userBlock._id,
+                    name: userBlock.name,
+                    image: userBlock.image
+                })
                 await user.save();
-                return true
+                return { message: "User Blocked" };
             }
         } else {
 
