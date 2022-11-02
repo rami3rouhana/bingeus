@@ -59,6 +59,15 @@ export const getAllTheaters = async () => {
     }
 }
 
+export const addVote = async (_id, userId) => {
+    try {
+        const theater = await TheaterModel.findById(_id);
+        theater?.polls.push({ userId })
+    } catch (e) {
+        throw new Error(e);
+    }
+}
+
 export const toogleBlock = async (_id: string, userId: string, channel: Channel): Promise<object | undefined> => {
     try {
         const theaters = await TheaterModel.find({ adminId: _id });
