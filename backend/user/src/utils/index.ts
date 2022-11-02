@@ -26,6 +26,7 @@ export const ValidatePassword = async (
 export const GenerateSignature = (payload: object) => {
   return jwt.sign(payload, config.get<string>('APP_SECRET'), { expiresIn: "1d" });
 }
+
 export const ValidateSignature = (req: Request) => {
 
   const signature = req?.get("Authorization");
