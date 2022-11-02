@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import config from "config";
 import { Request } from "express";
 import amqplib, { Channel } from "amqplib";
-import services from "../service/services";
 
 interface userCredentials {
   _id: string;
