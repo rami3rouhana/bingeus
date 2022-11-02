@@ -1,14 +1,15 @@
+import { Channel } from "amqplib";
 import { Request, Response } from "express";
 import { PollInput } from "../database/schema/poll.schema";
-import { createPoll, removePoll, addVote } from "../service/poll.service"
+import { createPoll, removePoll, addVote } from "../service/poll.service";
 import logger from '../utils/logger';
 
-export const creatrePollHandler = async (
+export const creatrePollHandler = (channel: Channel) => async (
     req: Request<PollInput['params'], {}, PollInput['body']>,
     res: Response,
 ) => {
     try {
-        const poll = await createPoll(req.body);
+        const poll = await createPoll(req.body, channel);
         return res.send(poll);
     } catch (e: any) {
         logger.error(e);
@@ -34,7 +35,7 @@ export const VoteHandler = async (
     res: Response,
 ) => {
     try {
-        await addVote(req.params.id as string , req.params.vote as string, req.user._id) ?
+        await addVote(req.params.id as string, req.params.vote as string, req.user._id) ?
             res.send({ message: "Already Voted" }) :
             res.send({ message: "User Voted" });
     } catch (e: any) {
