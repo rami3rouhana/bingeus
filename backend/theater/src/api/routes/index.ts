@@ -16,7 +16,7 @@ export default async (app: Express, channel: Channel) => {
 
     app.put('/theater/:id', validateUser, validateResource(editUserTheaterSchema), editTheaterHandler);
 
-    app.put('/block/:id', validateUser, validateResource(BlockSchema), blockUserHandler);
+    app.put('/block/:id', validateUser, validateResource(BlockSchema), blockUserHandler(channel));
 
     app.get('/playlist/:id', validateUser, GetPlaylistHandler);
 
@@ -28,5 +28,6 @@ export default async (app: Express, channel: Channel) => {
 
     const service = new services();
 
-    SubscribeMessage(channel, service)
+    SubscribeMessage(channel, service);
+    
 }
