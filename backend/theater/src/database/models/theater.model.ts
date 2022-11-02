@@ -25,26 +25,13 @@ export interface UserInput {
         current?:boolean,
         description: string,
     }],
-    blockedList: [{
-        userId: string,
-        name: string,
-        image: string
-    }]
+    blockedList: [ string ]
 }
 
 
 export interface TheaterDocument extends UserInput, mongoose.Document {
     createdAt: Date;
     updatedAt: Date;
-}
-
-export interface userBlock {
-    _id: ObjectId;
-    blockedList: [{
-        userId: ObjectId,
-        name: string,
-        image: string
-    }]
 }
 
 export interface theaterVote {
