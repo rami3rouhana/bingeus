@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import config from "config";
 import logger from "../utils/logger";
 
-module.exports = async () => {
+export default async () => {
 
     try {
         mongoose.connect(config.get<string>('DB_URL'));

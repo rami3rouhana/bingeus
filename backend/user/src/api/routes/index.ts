@@ -4,7 +4,7 @@ import { createUserSchema, loginUserSchema, editUserSchema } from "../../databas
 import { validateUser } from '../middleware/validateUser';
 import { validateResource } from '../middleware/validateResource';
 import { SubscribeMessage } from "../../utils";
-import  services from "../../service/services";
+import  services from "../../service/other-services";
 import { Channel } from "amqplib";
 
 export default async (app: Express, channel: Channel) => {

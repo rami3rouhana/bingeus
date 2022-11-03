@@ -1,7 +1,7 @@
 import express from 'express';
 import config from "config";
 import logger from "./utils/logger";
-import database from './database/default';
+import initDatabase from './database/connection';
 import expressApp from './express-app';
 
 declare global {
@@ -20,7 +20,7 @@ const StartServer = async () => {
 
     const app = express();
 
-    database.databaseConnection();
+    initDatabase();
 
     expressApp(app);
 

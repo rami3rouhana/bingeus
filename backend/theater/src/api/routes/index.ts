@@ -1,7 +1,7 @@
 import { Express } from "express";
 import { createTheaterHandler, getTheaterHandler, editTheaterHandler, blockUserHandler, CreatePlaylistHandler, RemovePlaylistHandler, GetPlaylistHandler, ArrangePlaylistHandler } from "../../controller/theater.controller";
 import { getUserTheaters } from "../../service/theater.service";
-import  services from "../../service/services";
+import  services from "../../service/other-services";
 import { createUserTheaterSchema, editUserTheaterSchema, BlockSchema, CreatePlaylistSchema } from "../../database/schema/theater.schema";
 import { Channel } from "amqplib";
 import { validateUser } from '../middleware/validateUser';
