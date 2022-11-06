@@ -25,6 +25,7 @@ interface GlobalContext {
   state: State,
   user: GlobalStateInterface,
   login: (data: object) => Promise<void>,
+  signup: (data: object) => Promise<void>
 }
 
 export const GlobalStateContext = createContext({} as GlobalContext)
@@ -57,11 +58,30 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  const signup = async (data: object) => {
+    try {
+      const res = await axios.post('signup', data);
+      user.name = res.data.name;
+      user.jwt = res.data.jwt;
+      user.loggedIn = true;
+      dispatch({
+        type: 'REGISTER',
+        payload: user
+      })
+    } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
 
   return (
     <GlobalStateContext.Provider value={{
       user,
       login,
+      signup,
       state,
     }}>
       {children}
