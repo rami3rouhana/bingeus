@@ -23,7 +23,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
 }
 
 export const setupInterceptorsTo = (axiosInstance: AxiosInstance): AxiosInstance => {
-    axios.defaults.baseURL = "http://localhost:8000/api/v0.1/";
+    axios.defaults.baseURL = "http://localhost:8001/";
     axiosInstance.interceptors.request.use(onRequest, onRequestError);
     axiosInstance.interceptors.response.use(onResponse, onResponseError);
     return axiosInstance;
