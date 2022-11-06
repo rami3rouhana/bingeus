@@ -7,7 +7,9 @@ import config from 'config';
 
 export const createUser = async (input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt' | 'salt'>>) => {
     try {
-        return await UserModel.create(input);
+        const user = await UserModel.create(input);
+        const jwt = GenerateSignature({ email: user.email, _id: user._id });
+        return { token: jwt, user: { _id: user._id, name: user.name, image: user.image } }
     } catch (e) {
         throw new Error(e)
     }
@@ -101,5 +103,5 @@ export async function validateUser({
 
     if (!isValid) throw Error('Wrong Credentinals');
 
-    return token;
+    return { token, user: { _id: user._id, name: user.name, image: user.image } };
 }
