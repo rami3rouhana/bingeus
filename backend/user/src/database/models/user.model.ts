@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
         name: { type: String, required: true },
         password: { type: String, required: true },
         salt: { type: String },
-        image: { type: String },
+        image: { type: String, default: './default.png' },
         blockedList: [{
             userId: { type: String },
             name: { type: String },
