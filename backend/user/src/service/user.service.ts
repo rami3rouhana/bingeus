@@ -42,7 +42,11 @@ export const editUser = async (input: editUser, email: string) => {
 
 export const getUser = async (_id: string) => {
     try {
-        return await UserModel.findOne({ _id });
+        const user = await UserModel.findOne({ _id });
+        if (!user)
+            return { message: "User Not Found" };
+        const jwt = GenerateSignature({ email: user.email, _id: user._id });
+        return { token: jwt, user: { _id: user._id, name: user.name, image: user.image, email: user.email, blockedList: user.blockedList } };
     } catch (e) {
         throw new Error(e)
     }
