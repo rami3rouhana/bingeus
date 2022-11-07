@@ -52,7 +52,7 @@ export const getProfile = async (
     res: Response
 ) => {
     try {
-        const user = await getUser(req.user.email);
+        const user = await getUser(req.user._id);
         return res.send(user);
     } catch (e: any) {
         logger.error(e);
