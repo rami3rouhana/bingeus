@@ -13,7 +13,7 @@ export default async (app: Express, channel: Channel) => {
 
     app.post('/login', validateResource(loginUserSchema), validateUserHandler);
 
-    app.get('/profile', validateUser, getProfile);
+    app.get('/auth', validateUser, getProfile);
 
     app.put('/profile', validateUser, validateResource(editUserSchema), editProfile);   
 
