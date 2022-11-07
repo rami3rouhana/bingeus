@@ -1,6 +1,6 @@
 import { createContext, ReactElement, ReactNode, useEffect, useReducer, useRef } from 'react';
 import Reducer from './reducer';
-import { ContextType, GlobalStateInterface } from './types';
+import { ContextType, UserStateInterface } from './types';
 
 /**
  * React Context-based Global Store with a reducer
@@ -49,9 +49,10 @@ export const GlobalStore = ({ children }: { children: ReactNode }): ReactElement
 
 export const globalContext = createContext({} as ContextType);
 
-export const initialState: GlobalStateInterface = {
+export const initialState: UserStateInterface = {
   id: '',
   name: '',
+  email: '',
   image: '',
   loggedIn: false,
   role: 0,

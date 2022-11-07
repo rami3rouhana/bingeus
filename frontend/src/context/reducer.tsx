@@ -8,6 +8,20 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
         ...state,
         user: action.payload,
       };
+    case 'REGISTER':
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case 'EDIT_PROFILE':
+      const user = state.user
+      for(let updated in action.payload){
+        user[updated] = action.payload[updated]
+      }
+      return {
+        ...state,
+        user: user,
+      };
     case 'ERROR':
       return {
         ...state,
