@@ -33,10 +33,10 @@ export const loginUserSchema = object({
 
 export const editUserSchema = object({
   body: object({
-    email: string(),
-    password: string(),
-    image: string(),
-    name: string(),
+    email: string().optional(),
+    password: string().optional(),
+    image: string().optional(),
+    name: string().optional(),
   }),
 });
 
