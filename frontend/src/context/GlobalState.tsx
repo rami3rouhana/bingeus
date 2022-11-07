@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from "../components/Interceptors";
 import Reducer from './reducer'
 import axios from 'axios'
 setupInterceptorsTo(axios);
-const user = { id: '', name: '', image: '', loggedIn: false, jwt: '' };
+const user = { id: '', name: '', image: '', email: '', loggedIn: false, jwt: '' };
 const intialeState = {
   error: null,
 }
@@ -11,6 +11,7 @@ const intialeState = {
 export interface GlobalStateInterface {
   id: string,
   name: string,
+  email: string,
   loggedIn: boolean,
   jwt: string,
   image: string,
@@ -21,12 +22,19 @@ export interface State {
   user: object;
 }
 
+interface EditValues {
+  value: string,
+  changed: boolean
+}
+
 
 interface GlobalContext {
   state: State,
   user: GlobalStateInterface,
   login: (data: object) => Promise<void>,
-  signup: (data: object) => Promise<void>
+  signup: (data: object) => Promise<void>,
+  auth: () => Promise<void>,
+  editUser: (name?: EditValues, email?: EditValues, password?: EditValues, image?: File) => Promise<void>
 }
 
 export const GlobalStateContext = createContext({} as GlobalContext)
@@ -44,9 +52,11 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (data: object) => {
     try {
       const res = await axios.post('login', data);
-      user.name = res.data.name;
-      user.image = res.data.image;
-      user.jwt = res.data.jwt;
+      user.name = res.data.user.name;
+      user.id = res.data.user._id;
+      user.email = res.data.user.email;
+      user.image = res.data.user.image;
+      user.jwt = res.data.token;
       user.loggedIn = true;
       dispatch({
         type: 'LOGIN',
@@ -60,10 +70,59 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  const auth = async () => {
+    try {
+      const res = await axios.get('auth');
+      user.name = res.data.user.name;
+      user.id = res.data.user._id;
+      user.email = res.data.user.email;
+      user.image = res.data.user.image;
+      user.jwt = res.data.token;
+      user.loggedIn = true;
+      dispatch({
+        type: 'LOGIN',
+        payload: user
+      })
+    } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
+  const editUser = async (name?: EditValues, email?: EditValues, password?: EditValues, image?: File) => {
+    try {
+      const data = {}
+      if (name?.changed)
+        data['name'] = name.value
+      if (email?.changed)
+        data['email'] = email.value
+      if (password?.changed)
+        data['password'] = password.value
+      if (image)
+        data['image'] = image
+
+      await axios.put('profile',data);
+
+      dispatch({
+        type: 'EDIT_PROFILE',
+        payload: data
+      })
+    } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
   const signup = async (data: object) => {
     try {
       const res = await axios.post('signup', data);
       user.name = res.data.name;
+      user.email = res.data.email;
+      user.image = res.data.image;
       user.jwt = res.data.jwt;
       user.loggedIn = true;
       dispatch({
@@ -84,6 +143,8 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
       user,
       login,
       signup,
+      auth,
+      editUser,
       state,
     }}>
       {children}
