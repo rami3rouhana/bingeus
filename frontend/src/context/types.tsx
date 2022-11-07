@@ -1,12 +1,17 @@
 import { Dispatch } from 'react';
 
-export interface GlobalStateInterface {
+export interface UserStateInterface {
   id: string,
-  name: string,
-  image:string,
+  name?: string,
+  image?: string,
   loggedIn: boolean,
-  role: number,
+  email?: string,
+  role: number
   children?: React.ReactNode
+}
+
+export interface GlobalStateInterface {
+  user: UserStateInterface
 }
 
 export type ActionType = {
