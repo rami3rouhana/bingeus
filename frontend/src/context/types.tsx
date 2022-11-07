@@ -3,6 +3,7 @@ import { Dispatch } from 'react';
 export interface GlobalStateInterface {
   id: string,
   name: string,
+  image:string,
   loggedIn: boolean,
   role: number,
   children?: React.ReactNode

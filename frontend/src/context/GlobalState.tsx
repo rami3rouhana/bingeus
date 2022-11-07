@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from "../components/Interceptors";
 import Reducer from './reducer'
 import axios from 'axios'
 setupInterceptorsTo(axios);
-const user = { id: '', name: '', loggedIn: false, jwt: '' };
+const user = { id: '', name: '', image: '', loggedIn: false, jwt: '' };
 const intialeState = {
   error: null,
 }
@@ -13,6 +13,7 @@ export interface GlobalStateInterface {
   name: string,
   loggedIn: boolean,
   jwt: string,
+  image: string,
   children?: React.ReactNode
 }
 
@@ -44,6 +45,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const res = await axios.post('login', data);
       user.name = res.data.name;
+      user.image = res.data.image;
       user.jwt = res.data.jwt;
       user.loggedIn = true;
       dispatch({

@@ -52,6 +52,7 @@ export const globalContext = createContext({} as ContextType);
 export const initialState: GlobalStateInterface = {
   id: '',
   name: '',
+  image: '',
   loggedIn: false,
   role: 0,
 };
