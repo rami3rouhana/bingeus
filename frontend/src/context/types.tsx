@@ -5,6 +5,7 @@ export interface UserStateInterface {
   name?: string,
   image?: string,
   loggedIn: boolean,
+  blockedList:object[],
   email?: string,
   role: number
   children?: React.ReactNode
