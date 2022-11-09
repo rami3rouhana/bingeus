@@ -17,7 +17,7 @@ export default async (app: Express, channel: Channel) => {
 
     app.put('/profile', validateUser, validateResource(editUserSchema), editProfile);   
 
-    app.get('/block/:id', validateUser, blockUser(channel));
+    app.get('/unblock/:id', validateUser, blockUser(channel));
 
     const service = new services();
 
