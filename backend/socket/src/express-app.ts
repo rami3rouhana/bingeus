@@ -17,7 +17,7 @@ export default async (app: Express, server: http.Server<typeof http.IncomingMess
 
     const io = new Server(server, {
         cors: {
-            origin: ["https://admin.socket.io"],
+            origin: ["https://admin.socket.io","http://localhost:3000"],
             credentials: true
         },
     });
