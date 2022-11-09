@@ -1,0 +1,73 @@
+version: "3"
+services:
+  user:
+    build:
+      dockerfile: Dockerfile
+      context: ./user
+    container_name: user
+    ports:
+      - "8001:8001"
+    restart: always
+    volumes:
+      - .:/app
+      - /app/user/node_modules
+    env_file:
+      - ./user/dev.env
+      - ./user/.env
+  theater:
+    build:
+      dockerfile: Dockerfile
+      context: ./theater
+    container_name: theater
+    ports:
+      - "8002:8002"
+    restart: always
+    volumes:
+      - .:/app
+      - /app/theater/node_modules
+    env_file:
+      - ./theater/dev.env
+      - ./theater/.env
+
+  socket:
+    build:
+      dockerfile: Dockerfile
+      context: ./socket
+    container_name: socket
+    ports:
+      - "8003:8003"
+    restart: always
+    volumes:
+      - .:/app
+      - /app/socket/node_modules
+    env_file:
+      - ./socket/dev.env
+      - ./socket/.env
+
+  poll:
+    build:
+      dockerfile: Dockerfile
+      context: ./poll
+    container_name: poll
+    ports:
+      - "8004:8004"
+    restart: always
+    volumes:
+      - .:/app
+      - /app/poll/node_modules
+    env_file:
+      - ./poll/dev.env
+      - ./poll/.env
+
+  nginx-proxy:
+    build:
+      dockerfile: Dockerfile
+      context: ./proxy
+    container_name: proxy
+    depends_on:
+      - user
+      - theater
+      - socket
+      - poll
+    ports:
+      - "80:80"

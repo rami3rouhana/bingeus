@@ -56,6 +56,7 @@ const theaterSchema = new mongoose.Schema(
         playlist: [{
             name: { type: String },
             video: { type: String },
+            image: { type: String },
             current: { type: Boolean, default: false },
             description: { type: String },
         }],

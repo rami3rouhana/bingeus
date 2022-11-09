@@ -51,6 +51,7 @@ export const editUserTheaterSchema = object({
 })
 
 
+
 export const CreatePlaylistSchema = object({
   body: object({
     name: string({
@@ -71,6 +72,14 @@ export const CreatePlaylistSchema = object({
 })
 
 export const BlockSchema = object({
+  params: object({
+    id: string({
+      required_error: "User is required",
+    })
+  })
+})
+
+export const TheaterSchema = object({
   params: object({
     id: string({
       required_error: "User is required",
@@ -106,6 +115,7 @@ export type CreateTheaterInput = TypeOf<typeof createTheaterSchema>;
 export type CreateUserTheaterInput = TypeOf<typeof createUserTheaterSchema>;
 export type CreatePlaylistInput = TypeOf<typeof CreatePlaylistSchema>;
 export type BlockInput = TypeOf<typeof BlockSchema>;
+export type GetTheater = TypeOf<typeof TheaterSchema>;
 export type PollInput = TypeOf<typeof PollSchema>;
 
 
