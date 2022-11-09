@@ -20,7 +20,7 @@ declare module 'socket.io' {
 export default async (app: Express, io: Server<any, any, any, any>, channel: Channel) => {
 
     const service = new services();
-
+    let user: any = {};
     SubscribeMessage(channel, service)
 
     app.get('/', (req, res) => {
@@ -37,7 +37,7 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
         if (videoRange) {
             const parts = videoRange.replace(/bytes=/, "").split("-");
             const start = parseInt(parts[0], 10);
-            
+
             const end = parts[1]
                 ? parseInt(parts[1], 10)
                 : fileSize - 1;
@@ -68,8 +68,13 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
         }
 
     });
+    const HomeIo = io.of('/main');
 
+    HomeIo.on('connection', (socket) => {
 
+        socket.emit('theaters', JSON.stringify(user));
+
+    });
     const theaterIo = io.of('/theater');
 
     theaterIo.use(async (socket, next) => {
@@ -81,8 +86,9 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
 
         let theater
         try {
-            theater = await axios.get(`http://localhost:8002/theater/${socket.handshake.auth.theater}`);
+            theater = await axios.get(`http://proxy/theater/${socket.handshake.auth.theater}`);
         } catch (error) {
+            console.log(error);
             return logger.error("Theater Doesn't Exist");
         }
 
@@ -100,12 +106,20 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
 
         socket.theater = socket.handshake.auth.theater;
 
+        user[socket.theater] ?
+            user[socket.theater]++ :
+            user[socket.theater] = 1;
+
+        console.log(user);
+
         socket.join(socket.handshake.auth.theater);
 
         next();
     })
 
     theaterIo.on('connection', (socket) => {
+
+
 
         socket.to(socket.theater).emit('receive message', `${socket._id} Joined room ${socket.theater}`);
 
@@ -145,6 +159,7 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
         })
 
         socket.on('disconnect', () => {
+            user[socket.theater]--;
             theaterIo.to(socket.theater).emit('receive message', `${socket._id} left room ${socket.theater}`);
             logger.error('user disconnected');
         });
