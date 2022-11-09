@@ -6,6 +6,7 @@ export interface UserStateInterface {
   image?: string,
   loggedIn: boolean,
   blockedList:object[],
+  theaters: object[],
   email?: string,
   role: number
   children?: React.ReactNode
