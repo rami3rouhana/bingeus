@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from "../components/Interceptors";
 import Reducer from './reducer'
 import axios from 'axios'
 setupInterceptorsTo(axios);
-const user = { id: '', name: '', image: '', email: '', blockedList: [], loggedIn: false, jwt: '' };
+const user = { id: '', name: '', image: '', email: '', blockedList: [], theaters: [], loggedIn: false, jwt: '' };
 const intialeState = {
   error: null,
 }
@@ -14,6 +14,7 @@ export interface GlobalStateInterface {
   email: string,
   loggedIn: boolean,
   blockedList: object[],
+  theaters: object[],
   jwt: string,
   image: string,
   children?: React.ReactNode
@@ -36,6 +37,7 @@ interface GlobalContext {
   signup: (data: object) => Promise<void>,
   auth: () => Promise<void>,
   unblock: (_id: string) => Promise<void>,
+  getUserTheaters: () => Promise<void>,
   editUser: (name?: EditValues, email?: EditValues, password?: EditValues, image?: File) => Promise<void>
 }
 
@@ -121,6 +123,21 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  const getUserTheaters = async () => {
+    try {
+      const res = await axios.get('/theater');
+      dispatch({
+        type: 'GET_THEATERS',
+        payload: res.data
+      })
+    } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
   const signup = async (data: object) => {
     try {
       const res = await axios.post('signup', data);
@@ -165,6 +182,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
       auth,
       editUser,
       unblock,
+      getUserTheaters,
       state,
     }}>
       {children}
