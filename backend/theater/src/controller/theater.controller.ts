@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { CreateTheaterInput, BlockInput, PollInput, CreatePlaylistInput } from "../database/schema/theater.schema";
-import { createTheater, getUserTheaters, editTheater, toogleBlock, insertMedia, removeMedia, getPlaylist, arrangePlaylist } from "../service/theater.service";
+import { CreateTheaterInput, BlockInput, PollInput, CreatePlaylistInput, GetTheater } from "../database/schema/theater.schema";
+import { createTheater, getAllTheaters, getUserTheaters, editTheater, toogleBlock, insertMedia, removeMedia, getPlaylist, arrangePlaylist, getTheaterById } from "../service/theater.service";
 import logger from '../utils/logger';
 
 export const createTheaterHandler = async (
@@ -19,11 +19,39 @@ export const createTheaterHandler = async (
 }
 
 export const getTheaterHandler = async (
-    req: Request<PollInput['params']>,
+    req: Request,
     res: Response,
 ) => {
     try {
-        const theater = await getUserTheaters(req.params.id);
+        const theater = await getUserTheaters(req.user._id);
+        return res.send(theater);
+    } catch (e: any) {
+        logger.error(e);
+        return res.status(409).send(e.message);
+    }
+}
+
+
+export const getAllTheaterHandler = async (
+    req: Request,
+    res: Response,
+) => {
+    try {
+        const theater = await getAllTheaters();
+        return res.send(theater);
+    } catch (e: any) {
+        logger.error(e);
+        return res.status(409).send(e.message);
+    }
+}
+
+export const getTheaterByIdHandler = async (
+    req: Request<GetTheater['params']>,
+    res: Response,
+) => {
+    try {
+        console.log('hy')
+        const theater = await getTheaterById(req.params.id);
         return res.send(theater);
     } catch (e: any) {
         logger.error(e);
