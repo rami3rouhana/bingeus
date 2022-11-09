@@ -54,6 +54,8 @@ export const initialState: UserStateInterface = {
   name: '',
   email: '',
   image: '',
+  blockedList:[],
+  theaters: [],
   loggedIn: false,
   role: 0,
 };

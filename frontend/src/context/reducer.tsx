@@ -2,11 +2,12 @@ import { ActionType, GlobalStateInterface } from './types';
 import { initialState } from './index';
 
 const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
+  const user = state.user;
   switch (action.type) {
     case 'LOGIN':
       return {
         ...state,
-        user: action.payload,
+        user: action.payload
       };
     case 'REGISTER':
       return {
@@ -14,10 +15,24 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
         user: action.payload,
       };
     case 'EDIT_PROFILE':
-      const user = state.user
-      for(let updated in action.payload){
-        user[updated] = action.payload[updated]
+
+      for (let updated in action.payload) {
+        user[updated] = action.payload[updated];
       }
+      return {
+        ...state,
+        user: user,
+      };
+    case 'UNBLOCK':
+      const userBlockedList = state.user.blockedList;
+      const blockedList = userBlockedList.filter((e: any) => e.userId !== action.payload);
+      user['blockedList'] = blockedList;
+      return {
+        ...state,
+        blockedList: blockedList,
+      };
+    case 'GET_THEATERS':
+      user.theaters = action.payload
       return {
         ...state,
         user: user,

@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from "../components/Interceptors";
 import Reducer from './reducer'
 import axios from 'axios'
 setupInterceptorsTo(axios);
-const user = { id: '', name: '', image: '', email: '', loggedIn: false, jwt: '' };
+const user = { id: '', name: '', image: '', email: '', blockedList: [], theaters: [], loggedIn: false, jwt: '' };
 const intialeState = {
   error: null,
 }
@@ -13,6 +13,8 @@ export interface GlobalStateInterface {
   name: string,
   email: string,
   loggedIn: boolean,
+  blockedList: object[],
+  theaters: object[],
   jwt: string,
   image: string,
   children?: React.ReactNode
@@ -34,6 +36,8 @@ interface GlobalContext {
   login: (data: object) => Promise<void>,
   signup: (data: object) => Promise<void>,
   auth: () => Promise<void>,
+  unblock: (_id: string) => Promise<void>,
+  getUserTheaters: () => Promise<void>,
   editUser: (name?: EditValues, email?: EditValues, password?: EditValues, image?: File) => Promise<void>
 }
 
@@ -56,6 +60,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
       user.id = res.data.user._id;
       user.email = res.data.user.email;
       user.image = res.data.user.image;
+      user.blockedList = res.data.user.blockedList;
       user.jwt = res.data.token;
       user.loggedIn = true;
       dispatch({
@@ -77,6 +82,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
       user.id = res.data.user._id;
       user.email = res.data.user.email;
       user.image = res.data.user.image;
+      user.blockedList = res.data.user.blockedList;
       user.jwt = res.data.token;
       user.loggedIn = true;
       dispatch({
@@ -103,11 +109,26 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
       if (image)
         data['image'] = image
 
-      await axios.put('profile',data);
+      await axios.put('profile', data);
 
       dispatch({
         type: 'EDIT_PROFILE',
         payload: data
+      })
+    } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
+  const getUserTheaters = async () => {
+    try {
+      const res = await axios.get('/theater');
+      dispatch({
+        type: 'GET_THEATERS',
+        payload: res.data
       })
     } catch (err: any) {
       dispatch({
@@ -137,6 +158,21 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  const unblock = async (userId: string) => {
+    try {
+      await axios.get(`unblock/${userId}`);
+      dispatch({
+        type: 'UNBLOCK',
+        payload: userId
+      })
+    } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
 
   return (
     <GlobalStateContext.Provider value={{
@@ -145,6 +181,8 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
       signup,
       auth,
       editUser,
+      unblock,
+      getUserTheaters,
       state,
     }}>
       {children}
