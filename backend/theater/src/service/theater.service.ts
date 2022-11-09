@@ -42,9 +42,17 @@ export const getTheater = async (adminId: string) => {
     }
 }
 
-export const getUserTheaters = async (theaterId: string) => {
+export const getTheaterById = async (adminId: string) => {
     try {
-        const theater = await TheaterModel.findById(theaterId);
+        return await TheaterModel.findById(adminId);
+    } catch (e) {
+        throw new Error(e);
+    }
+}
+
+export const getUserTheaters = async (adminId: string) => {
+    try {
+        const theater = await TheaterModel.find({adminId});
         return theater;
     } catch (e) {
         throw new Error(e);
