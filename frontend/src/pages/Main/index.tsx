@@ -1,10 +1,12 @@
-import { useContext, useEffect, ReactElement, useRef } from "react";
+import { useContext, useEffect, ReactElement, useRef, useState } from "react";
 import { GlobalStateContext } from "../../context/GlobalState";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
 
 const MainPage: () => ReactElement<any, any> = () => {
+
+    const [stat, setStat] = useState([]);
     const userInfo = useContext(GlobalStateContext);
 
     const ref = useRef<HTMLUListElement>(null);
@@ -20,11 +22,10 @@ const MainPage: () => ReactElement<any, any> = () => {
 
         socket.on('connect', async () => {
 
-            
-
             socket.on('theaters', (msg) => {
                 let item = document.createElement('li');
-                console.log(msg)
+                const statistics = Object.keys(JSON.parse(msg)) as never[];
+                setStat(statistics);
                 item.textContent = msg;
                 ref.current?.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
@@ -32,14 +33,24 @@ const MainPage: () => ReactElement<any, any> = () => {
 
         });
     }
+
     useEffect(() => {
         socket();
+        const fetch = async () => {
+            await userInfo.getAllTheaters();
+        }
+        fetch();
     }, [])
+
+
 
     return (
         <>
             <ul ref={ref}>
-
+                {userInfo.user.allTheaters?.map((theater: any) => {
+                    if (stat.slice(0, 5).includes(theater._id as never))
+                        return <li key={theater._id }>{theater.name}</li>
+                })}
             </ul>
         </>
     )
