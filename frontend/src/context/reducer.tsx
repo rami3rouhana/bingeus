@@ -32,10 +32,16 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
         blockedList: blockedList,
       };
     case 'GET_THEATERS':
-      user.theaters = action.payload
+      user.theaters = action.payload;
       return {
         ...state,
         user: user,
+      };
+    case 'GET_ALL_THEATERS':
+      user.allTheaters = action.payload;
+      return {
+        ...state,
+        user: action.payload,
       };
     case 'ERROR':
       return {
