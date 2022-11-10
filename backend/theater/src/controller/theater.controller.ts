@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { CreateTheaterInput, BlockInput, PollInput, CreatePlaylistInput, GetTheater } from "../database/schema/theater.schema";
 import { createTheater, getAllTheaters, getUserTheaters, editTheater, toogleBlock, insertMedia, removeMedia, getPlaylist, arrangePlaylist, getTheaterById } from "../service/theater.service";
 import logger from '../utils/logger';
+import fs from 'fs';
+import { dirname } from 'path';
+
 
 export const createTheaterHandler = async (
     req: Request<{}, {}, CreateTheaterInput['body']>,
@@ -15,6 +18,47 @@ export const createTheaterHandler = async (
     } catch (e: any) {
         logger.error(e);
         return res.status(409).send(e.message);
+    }
+}
+
+export const streamVideo = async (
+    req: Request,
+    res: Response,
+) => {
+
+    const videoPath = `/app/theater/public/${req.params.id}.mp4`;
+    const videoStat = fs.statSync(videoPath);
+    const fileSize = videoStat.size;
+    const videoRange = req.headers.range;
+
+    if (videoRange) {
+        const parts = videoRange.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+
+        const end = parts[1]
+            ? parseInt(parts[1], 10)
+            : fileSize - 1;
+
+        const chunksize = (end - start) + 1;
+        const file = fs.createReadStream(videoPath, { start, end });
+
+        const header = {
+            'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
+            'Content-Type': 'video/mp4',
+        };
+
+        res.writeHead(206, header);
+        file.pipe(res);
+    } else {
+        const header = {
+            'Content-Length': fileSize,
+            'Content-Type': 'video/mp4',
+        };
+
+        res.writeHead(200, header);
+        fs.createReadStream(videoPath).pipe(res);
     }
 }
 
