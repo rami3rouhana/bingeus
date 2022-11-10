@@ -22,23 +22,33 @@ interface editUser {
     image?: string
 }
 
-export const editUser = async (input: editUser, email: string) => {
+export const updateImage = async (_id: string, path: string) => {
     try {
-        const user = await UserModel.findOne({ email });
-        input.email ? await user?.update({ email: input.email }) : false;
+        const user = await UserModel.findById(_id);
+        await user?.updateOne({ image: path });
+        return { message: "Succesfully upadated", path };
+    } catch (e) {
+        throw new Error(e)
+    }
+}
+
+export const editUser = async (input: editUser, _id: string) => {
+    try {
+        const user = await UserModel.findById(_id);
         if (input.password) {
             const salt = await bcrypt.genSalt();
             const hash = bcrypt.hashSync(input.password, salt);
-            await user?.update({ password: hash, salt: salt });
+            await user?.updateOne({ password: hash, salt: salt });
         }
-        input.name ? await user?.update({ name: input.name }) : false;
-        input.image ? await user?.update({ image: input.image }) : false;
-
+        input.name ? await user?.updateOne({ name: input.name }) : false;
         return { message: "Succesfully upadated" };
     } catch (e) {
         throw new Error(e)
     }
 }
+
+
+
 
 export const getUser = async (_id: string) => {
     try {

@@ -10,7 +10,7 @@ import { SubscribeMessage } from "../../utils";
 
 export default async (app: Express, channel: Channel) => {
 
-    app.get('/', validateUser, getTheaterHandler);
+    app.get('/user', validateUser, getTheaterHandler);
 
     app.get('/all', getAllTheaterHandler);
 
