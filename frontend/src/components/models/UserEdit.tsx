@@ -1,4 +1,4 @@
-import { GlobalStateContext } from "../../../context/GlobalState";
+import { GlobalStateContext } from "../../context/GlobalState";
 import { useContext, useRef, useState } from 'react';
 import ReactDom from "react-dom";
 import { EditText } from 'react-edit-text';
