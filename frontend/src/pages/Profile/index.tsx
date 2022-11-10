@@ -1,6 +1,6 @@
-import BlockList from "../../components/ui/BlockList";
-import UserInfo from "../../components/ui/UserInfo";
-import UserTheaters from "../../components/ui/UserTheaters";
+import BlockList from "../../components/screen/BlockList";
+import UserInfo from "../../components/screen/UserInfo";
+import UserTheaters from "../../components/screen/UserTheaters";
 import { useContext, useEffect, ReactElement, } from "react";
 import { GlobalStateContext } from "../../context/GlobalState";
 import { useNavigate } from "react-router-dom";

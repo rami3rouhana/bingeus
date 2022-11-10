@@ -40,8 +40,9 @@ interface GlobalContext {
   auth: () => Promise<void>,
   unblock: (_id: string) => Promise<void>,
   getUserTheaters: () => Promise<void>,
+  uploadImage: (data: any) => Promise<void>,
   getAllTheaters: () => Promise<void>,
-  editUser: (name?: EditValues, email?: EditValues, password?: EditValues, image?: File) => Promise<void>
+  editUser: (name?: EditValues, email?: EditValues, password?: EditValues, image?: FormData) => Promise<void>
 }
 
 export const GlobalStateContext = createContext({} as GlobalContext)
@@ -100,7 +101,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  const editUser = async (name?: EditValues, email?: EditValues, password?: EditValues, image?: File) => {
+  const editUser = async (name?: EditValues, email?: EditValues, password?: EditValues) => {
     try {
       const data = {}
       if (name?.changed)
@@ -109,8 +110,6 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
         data['email'] = email.value
       if (password?.changed)
         data['password'] = password.value
-      if (image)
-        data['image'] = image
 
       await axios.put('profile', data);
 
@@ -128,7 +127,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getUserTheaters = async () => {
     try {
-      const res = await axios.get('/theater');
+      const res = await axios.get('/theater/user');
       dispatch({
         type: 'GET_THEATERS',
         payload: res.data
@@ -191,11 +190,27 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  const uploadImage = async (data: any) => {
+    try {
+      const res = await axios.post(`upload`, data);
+      dispatch({
+        type: 'UPLOAD_IMAGE',
+        payload: res.data
+      })
+    } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
 
   return (
     <GlobalStateContext.Provider value={{
       user,
       login,
+      uploadImage,
       signup,
       auth,
       editUser,
