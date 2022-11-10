@@ -15,10 +15,15 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
         user: action.payload,
       };
     case 'EDIT_PROFILE':
-
       for (let updated in action.payload) {
         user[updated] = action.payload[updated];
       }
+      return {
+        ...state,
+        user: user,
+      };
+    case 'UPLOAD_IMAGE':
+      user.image = action.payload.path;
       return {
         ...state,
         user: user,
