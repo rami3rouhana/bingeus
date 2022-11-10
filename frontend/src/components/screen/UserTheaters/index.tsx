@@ -1,6 +1,6 @@
 import { GlobalStateContext } from "../../../context/GlobalState";
 import { useContext, useEffect, useState } from 'react';
-import TheaterAdd from "../Models/TheaterAdd";
+import TheaterAdd from "../../models/TheaterAdd";
 
 const UserTheaters = () => {
     const userInfo = useContext(GlobalStateContext);
