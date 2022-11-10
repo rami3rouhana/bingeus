@@ -1,10 +1,10 @@
 import { Express } from "express";
-import { createUserHandler, validateUserHandler, editProfile, getProfile, blockUser } from "../../controller/user.controller";
+import { createUserHandler, validateUserHandler, editProfile, getProfile, blockUser, uploadImage, displayImage } from "../../controller/user.controller";
 import { createUserSchema, loginUserSchema, editUserSchema } from "../../database/schema/user.schema";
 import { validateUser } from '../middleware/validateUser';
 import { validateResource } from '../middleware/validateResource';
 import { SubscribeMessage } from "../../utils";
-import  services from "../../service/other-services";
+import services from "../../service/other-services";
 import { Channel } from "amqplib";
 
 export default async (app: Express, channel: Channel) => {
@@ -15,7 +15,11 @@ export default async (app: Express, channel: Channel) => {
 
     app.get('/auth', validateUser, getProfile);
 
-    app.put('/profile', validateUser, validateResource(editUserSchema), editProfile);   
+    app.patch('/profile', validateUser, validateResource(editUserSchema), editProfile);
+
+    app.get('/image/:path', displayImage)
+
+    app.post("/upload", validateUser, uploadImage);
 
     app.get('/unblock/:id', validateUser, blockUser(channel));
 
