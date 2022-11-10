@@ -50,7 +50,6 @@ export const getTheaterByIdHandler = async (
     res: Response,
 ) => {
     try {
-        console.log('hy')
         const theater = await getTheaterById(req.params.id);
         return res.send(theater);
     } catch (e: any) {
