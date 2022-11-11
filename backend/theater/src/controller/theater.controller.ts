@@ -3,8 +3,7 @@ import { CreateTheaterInput, BlockInput, PollInput, CreatePlaylistInput, GetThea
 import { createTheater, getAllTheaters, getUserTheaters, editTheater, toogleBlock, insertMedia, removeMedia, getPlaylist, arrangePlaylist, getTheaterById } from "../service/theater.service";
 import logger from '../utils/logger';
 import fs from 'fs';
-import { dirname } from 'path';
-
+import md5 from "md5";
 
 export const createTheaterHandler = async (
     req: Request<{}, {}, CreateTheaterInput['body']>,
@@ -25,8 +24,7 @@ export const streamVideo = async (
     req: Request,
     res: Response,
 ) => {
-
-    const videoPath = `/app/theater/public/${req.params.id}.mp4`;
+    const videoPath = `/app/theater/public/${req.params.id}`;
     const videoStat = fs.statSync(videoPath);
     const fileSize = videoStat.size;
     const videoRange = req.headers.range;
@@ -59,6 +57,30 @@ export const streamVideo = async (
 
         res.writeHead(200, header);
         fs.createReadStream(videoPath).pipe(res);
+    }
+}
+
+export const uploadVideo = (
+    req: Request,
+    res: Response,
+) => {
+    const { name, currentChunkIndex, totalChunks } = req.query;
+    const firstChunk = parseInt(currentChunkIndex) === 0;
+    const lastChunk = parseInt(currentChunkIndex) === parseInt(totalChunks) - 1;
+    const ext = name.split('.').pop();
+    const data = req.body.toString().split(',')[1];
+    const buffer = Buffer.from(data, 'base64');
+    const tmpFilename = 'tmp_' + md5(name + req.ip) + '.' + ext;
+    if (firstChunk && fs.existsSync('./public/' + tmpFilename)) {
+        fs.unlinkSync('./public/' + tmpFilename);
+    }
+    fs.appendFileSync('./public/' + tmpFilename, buffer);
+    if (lastChunk) {
+        const finalFilename = md5(Date.now()).substr(0, 6) + '.' + ext;
+        fs.renameSync('./public/' + tmpFilename, './public/' + finalFilename);
+        res.json({ finalFilename });
+    } else {
+        res.json('ok');
     }
 }
 
