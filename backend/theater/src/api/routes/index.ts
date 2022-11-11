@@ -1,5 +1,5 @@
 import { Express } from "express";
-import { createTheaterHandler, getAllTheaterHandler, getTheaterHandler, getTheaterByIdHandler, streamVideo, editTheaterHandler, blockUserHandler, CreatePlaylistHandler, RemovePlaylistHandler, GetPlaylistHandler, ArrangePlaylistHandler } from "../../controller/theater.controller";
+import { createTheaterHandler, getAllTheaterHandler, getTheaterHandler, getTheaterByIdHandler, streamVideo, uploadVideo, editTheaterHandler, blockUserHandler, CreatePlaylistHandler, RemovePlaylistHandler, GetPlaylistHandler, ArrangePlaylistHandler } from "../../controller/theater.controller";
 import { getUserTheaters } from "../../service/theater.service";
 import services from "../../service/other-services";
 import { createUserTheaterSchema, editUserTheaterSchema, BlockSchema, CreatePlaylistSchema, TheaterSchema } from "../../database/schema/theater.schema";
@@ -21,6 +21,8 @@ export default async (app: Express, channel: Channel) => {
     app.patch('/theater/:id', validateUser, validateResource(editUserTheaterSchema), editTheaterHandler);
 
     app.get('/video/:id', streamVideo);
+
+    app.post('/video', validateUser, uploadVideo);
 
     app.get('/block/:id', validateUser, validateResource(BlockSchema), blockUserHandler(channel));
 
