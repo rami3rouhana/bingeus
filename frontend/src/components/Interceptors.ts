@@ -1,8 +1,10 @@
-import axios,{ AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
-    const token = localStorage.getItem('token');
-    config.headers ? config.headers.Authorization  = `Bearer ${token}`: console.log('error');
+    if (config.baseURL === "http://localhost:80") {
+        const token = localStorage.getItem('token');
+        config.headers ? config.headers.Authorization = `Bearer ${token}` : console.log('error');
+    }
     return config;
 }
 
@@ -12,8 +14,8 @@ const onRequestError = (error: AxiosError): Promise<AxiosError> => {
 }
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-    if(typeof response.data.token !== 'undefined')
-    localStorage.setItem("token", response.data.token);
+    if (typeof response.data.token !== 'undefined')
+        localStorage.setItem("token", response.data.token);
     return response;
 }
 
