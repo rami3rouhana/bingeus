@@ -11,8 +11,7 @@ export const createTheaterHandler = async (
 ) => {
 
     try {
-        req.body.adminId = req.user._id;
-        const theater = await createTheater(req.body);
+        const theater = await createTheater(req.body, req.user._id);
         return res.send(theater);
     } catch (e: any) {
         logger.error(e);
