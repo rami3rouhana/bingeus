@@ -63,14 +63,16 @@ const TheaterAdd = ({ setShowModal }) => {
                         files.map((file: any, index: number) => {
                             uploadedFiles[index] = {
                                 name: file.finalFilename,
-                                image: file.image
+                                image: file.image,
+                                duration: file.timeLength,
+                                description: file.plot,
                             }
                         })
                         const data = {
                             name,
                             uploadedFiles
                         }
-                        // await userInfo.addTheater();
+                        await userInfo.addTheater(data);
                         setShowModal(false);
                     }
                 } else {
@@ -153,7 +155,9 @@ const TheaterAdd = ({ setShowModal }) => {
                                     if (movie.data.Error)
                                         return Error(movie.data.Error);
                                     setVerified([...verified, fileIndex]);
+                                    file.plot = movie.data.Plot;
                                     file.image = movie.data.Poster;
+                                    file.timeLength = movie.data.Runtime;
                                     file.realName = movie.data.Title;
                                 }} defaultValue={file.name.split('.')[0]} />
                                 <div className="name">{file.name}</div>

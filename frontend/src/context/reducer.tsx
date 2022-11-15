@@ -42,6 +42,13 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
         ...state,
         user: user,
       };
+    case 'ADD_THEATER':
+      user.theaters = [...user.theaters, action.payload];
+      debugger
+      return {
+        ...state,
+        user: user,
+      };
     case 'GET_ALL_THEATERS':
       user.allTheaters = action.payload;
       return {
