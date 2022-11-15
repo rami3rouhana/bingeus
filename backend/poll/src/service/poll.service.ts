@@ -5,9 +5,12 @@ import PollModel, { PollDocument } from '../database/models/poll.model';
 import { PublishMessage } from "../utils";
 
 
-export const createPoll = async (input: DocumentDefinition<Omit<PollDocument, 'createdAt' | 'updatedAt' | 'usersId'>>, channel?: Channel) => {
+export const createPoll = async (input: DocumentDefinition<Omit<PollDocument, 'createdAt' | 'updatedAt' | 'usersId'>>, userId: string, theaterId: string, channel?: Channel) => {
     try {
         const poll = await PollModel.create(input);
+        poll.adminId = userId;
+        poll.theaterId = theaterId;
+        await poll.save();
         const payload = {
             event: "ADD_POLL",
             payloads: poll

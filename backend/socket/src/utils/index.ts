@@ -3,9 +3,10 @@ import config from "config";
 import amqplib, { Channel, ConsumeMessage } from "amqplib";
 
 export class userCredentials {
-  constructor(public _id: string, public email: string) {
+  constructor(public _id: string, public name: string, public image: string) {
     this._id = _id;
-    this.email = email;
+    this.name = name;
+    this.image = image;
   }
 }
 
@@ -17,8 +18,7 @@ export const GenerateSignature = (payload: userCredentials) => {
 export const ValidateSignature = (token: string | JwtPayload) => {
   if (token) {
     const payload = jwt.verify(token as string, config.get<string>('APP_SECRET')) as userCredentials;
-    const response = { _id: payload?._id, email: payload?.email } as userCredentials
-    return response;
+    return payload;
   }
 
   return false;
@@ -51,21 +51,3 @@ export const PublishMessage = (channel: Channel, service: string, msg: string) =
   console.log("Sent: ", msg);
 };
 
-export const SubscribeMessage = async (channel: Channel, service) => {
-  await channel.assertExchange(config.get<string>('EXCHANGE_NAME'), "direct", { durable: true });
-  const q = await channel.assertQueue(config.get<string>('QUEUE_NAME'), { exclusive: true, durable: true });
-  console.log(` Waiting for messages in queue: ${q.queue}`);
-  channel.bindQueue(q.queue, config.get<string>('EXCHANGE_NAME'), config.get<string>('SOCKET_SERVICE'));
-
-  channel.consume(
-    q.queue,
-    (msg) => {
-      if (msg?.content) {
-        channel.ack(msg)
-        console.log("the message is:", msg.content.toString());
-        service.SubscribeEvents(msg.content.toString(), channel);
-      }
-      console.log("[X] received");
-    }
-  )
-}

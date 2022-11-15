@@ -2,12 +2,6 @@ import { object, string, TypeOf } from "zod";
 
 export const PollSchema = object({
     body: object({
-      adminId:string({
-        required_error: "Admin Id is required"
-      }),
-      theaterId:string({
-        required_error: "Theater Id is required"
-      }),
       title: string({
         required_error: "Title is required"
       }),

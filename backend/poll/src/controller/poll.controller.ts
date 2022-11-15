@@ -5,11 +5,11 @@ import { createPoll, removePoll, addVote } from "../service/poll.service";
 import logger from '../utils/logger';
 
 export const creatrePollHandler = (channel: Channel) => async (
-    req: Request<PollInput['params'], {}, PollInput['body']>,
+    req: Request<PollInput['params'], {}, {}>,
     res: Response,
 ) => {
     try {
-        const poll = await createPoll(req.body, channel);
+        const poll = await createPoll(req.body, req.user._id, req.params.id, channel);
         return res.send(poll);
     } catch (e: any) {
         logger.error(e);

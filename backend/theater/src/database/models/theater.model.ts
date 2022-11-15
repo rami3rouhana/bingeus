@@ -50,13 +50,15 @@ const theaterSchema = new mongoose.Schema(
         name: { type: String, required: true },
         showing: {
             title: { type: String, required: true },
-            poster: { type: String, required: true },
+            duration: { type: String },
+            image: { type: String, required: true },
             description: { type: String, required: true },
         },
         playlist: [{
             name: { type: String },
             video: { type: String },
             image: { type: String },
+            duration: { type: String },
             current: { type: Boolean, default: false },
             description: { type: String },
         }],

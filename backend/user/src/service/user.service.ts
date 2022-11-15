@@ -8,7 +8,7 @@ import config from 'config';
 export const createUser = async (input: DocumentDefinition<Omit<UserDocument, 'createdAt' | 'updatedAt' | 'salt'>>) => {
     try {
         const user = await UserModel.create(input);
-        const jwt = GenerateSignature({ email: user.email, _id: user._id });
+        const jwt = GenerateSignature({ name: user.name, image: user.image, _id: user._id });
         return { token: jwt, user: { _id: user._id, name: user.name, image: user.image } }
     } catch (e) {
         throw new Error(e)
@@ -55,7 +55,7 @@ export const getUser = async (_id: string) => {
         const user = await UserModel.findOne({ _id });
         if (!user)
             return { message: "User Not Found" };
-        const jwt = GenerateSignature({ email: user.email, _id: user._id });
+        const jwt = GenerateSignature({ name: user.name, image: user.image, _id: user._id });
         return { token: jwt, user: { _id: user._id, name: user.name, image: user.image, email: user.email, blockedList: user.blockedList } };
     } catch (e) {
         throw new Error(e)
@@ -113,7 +113,7 @@ export async function validateUser({
 
     const isValid = await ValidatePassword(password, user.password, user.salt);
 
-    const token = GenerateSignature({ email: user.email, _id: user._id });
+    const token = GenerateSignature({ name: user.name, image: user.image, _id: user._id });
 
     if (!isValid) throw Error('Wrong Credentinals');
 

@@ -16,7 +16,7 @@ export default async (app: Express, channel: Channel) => {
 
     app.get('/:id', validateResource(TheaterSchema), getTheaterByIdHandler);
 
-    app.post('/', validateUser, validateResource(createUserTheaterSchema), createTheaterHandler);
+    app.post('/', validateUser, createTheaterHandler);
 
     app.patch('/theater/:id', validateUser, validateResource(editUserTheaterSchema), editTheaterHandler);
 

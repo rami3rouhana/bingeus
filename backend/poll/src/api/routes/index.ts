@@ -7,10 +7,10 @@ import { Channel } from "amqplib";
 
 export default async (app: Express, channel: Channel) => {
 
-    app.post('/poll', validateUser, validateResource(PollSchema), creatrePollHandler(channel));
+    app.post('/:id', validateUser, validateResource(PollSchema), creatrePollHandler(channel));
 
-    app.delete('/poll/:id', validateUser, RemovePollHandler);
+    app.delete('/:id', validateUser, RemovePollHandler);
 
-    app.put('/poll/:id/:vote', validateUser, VoteHandler);
+    app.put('/:id/:vote', validateUser, VoteHandler);
 
 }

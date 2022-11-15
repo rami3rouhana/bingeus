@@ -25,12 +25,15 @@ export const createUserTheaterSchema = object({
     name: string({
       required_error: "Name is required",
     }),
-    showing: object({
-      title: string({
+    uploadedFiles: object({
+      name: string({
         required_error: "Title is required",
       }),
-      poster: string({
+      image: string({
         required_error: "Poster is required",
+      }),
+      duration: string({
+        required_error: "Description is required",
       }),
       description: string({
         required_error: "Description is required",
