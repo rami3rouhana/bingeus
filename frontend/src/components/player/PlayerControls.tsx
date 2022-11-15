@@ -149,7 +149,19 @@ const PlayerControls: React.FC<ReactPlayerProps> = (props) => {
         </Stack>
       </StyledPlayerControls>
     );
-  return <></>
+  else
+    return (
+      <StyledPlayerControls className={'video-player__controls'}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Stack direction="row" alignItems="center" spacing={2}>
+            {renderSoundSlider()} {renderDurationText()}
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            {renderFullscreenButton()}
+          </Stack>
+        </Stack>
+      </StyledPlayerControls>
+    );
 };
 
 export default PlayerControls;
