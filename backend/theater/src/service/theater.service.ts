@@ -4,9 +4,20 @@ import TheaterModel, { TheaterDocument } from '../database/models/theater.model'
 import { PublishMessage } from "../utils";
 import { Channel } from 'amqplib';
 
-export const createTheater = async (input: DocumentDefinition<Omit<TheaterDocument, 'createdAt' | 'updatedAt' | 'chatRoom' | 'polls' | 'playlist' | 'blockedList'>>) => {
+export const createTheater = async (input: any, _id: string) => {
     try {
-        return await TheaterModel.create(input);
+        const theater = new TheaterModel;
+        theater.name = input.name;
+        theater.adminId = _id;
+        theater.showing.title = input.uploadedFiles[0].name;
+        theater.showing.image = input.uploadedFiles[0].image;
+        theater.showing.duration = input.uploadedFiles[0].duration;
+        theater.showing.description = input.uploadedFiles[0].description;
+        Object.values(input.uploadedFiles)?.map((file: any) => {
+            theater.playlist = file;
+        })
+
+        return await theater.save();
     } catch (e) {
         throw new Error(e);
     }
@@ -52,7 +63,7 @@ export const getTheaterById = async (adminId: string) => {
 
 export const getUserTheaters = async (adminId: string) => {
     try {
-        const theater = await TheaterModel.find({adminId});
+        const theater = await TheaterModel.find({ adminId });
         return theater;
     } catch (e) {
         throw new Error(e);
