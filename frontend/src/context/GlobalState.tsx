@@ -40,6 +40,7 @@ interface GlobalContext {
   auth: () => Promise<void>,
   unblock: (_id: string) => Promise<void>,
   getUserTheaters: () => Promise<void>,
+  addTheater: (data: object) => Promise<void>,
   uploadImage: (data: any) => Promise<void>,
   getAllTheaters: () => Promise<void>,
   editUser: (name?: EditValues, email?: EditValues, password?: EditValues, image?: FormData) => Promise<void>
@@ -72,6 +73,21 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
         payload: user
       })
     } catch (err: any) {
+      dispatch({
+        type: 'ERROR',
+        payload: err
+      })
+    }
+  }
+
+  const addTheater = async (data: any) => {
+    try {
+      const res = await axios.post('theater/', data);
+      dispatch({
+        type: 'ADD_THEATER',
+        payload: res.data
+      })
+    } catch (err) {
       dispatch({
         type: 'ERROR',
         payload: err
@@ -210,6 +226,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     <GlobalStateContext.Provider value={{
       user,
       login,
+      addTheater,
       uploadImage,
       signup,
       auth,
