@@ -8,7 +8,8 @@ import services from "../service/other-services";
 
 interface userCredentials {
   _id: string;
-  email: string;
+  name: string;
+  image: string;
 }
 
 
@@ -34,8 +35,8 @@ export const ValidateSignature = (req: Request) => {
   const signature = req?.get("Authorization");
 
   if (signature) {
-    const payload = jwt.verify(signature.split(" ")[1], config.get<string>('APP_SECRET'));
-    req.user = payload as userCredentials;
+    const payload = jwt.verify(signature.split(" ")[1], config.get<string>('APP_SECRET')) as userCredentials;
+    req.user = payload;
     return true;
   }
 
