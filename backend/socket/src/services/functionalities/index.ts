@@ -5,7 +5,6 @@ import logger from "../../utils/logger";
 import { userCredentials } from '../../utils';
 import validateSignature from '../middleware/validateUser';
 import axios from 'axios';
-import services from './service.class';
 
 declare module 'socket.io' {
     interface Socket {
@@ -15,7 +14,7 @@ declare module 'socket.io' {
     }
 }
 
-const validate = async (socket: any, next: any, user?: any) => {
+const validate = async (socket: any, next: any) => {
 
     let payloads = await validateSignature(socket.handshake.auth.token) as unknown as userCredentials;
     if (typeof payloads === 'undefined')
@@ -45,14 +44,8 @@ const validate = async (socket: any, next: any, user?: any) => {
         return logger.error("User is blocked");
     }
 
-    {
-        if (user)
-            user[socket.theater] ?
-                user[socket.theater]++ :
-                user[socket.theater] = 1;
+    socket.isPlaying = false;
 
-        console.log(user);
-    }
     socket.join(socket.handshake.auth.theater);
 
     next();
@@ -63,58 +56,75 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
 
     let user: any = {};
     const HomeIo = io.of('/main');
-
     HomeIo.on('connection', async (socket) => {
+        let theaters = {};
+        const d = await theaterIo.fetchSockets();
+        const m = await MovieIo.fetchSockets();
 
-        const users = await theaterIo.fetchSockets();
-        console.log('hy')
-        socket.emit('theaters', JSON.stringify(users));
+        m.map(s => {
+            if (typeof theaters[s.theater] !== 'undefined') {
+                theaters[s.theater].count = theaters[s.theater].count + 1;
+            } else {
+                theaters[s.theater] = { count: 1 };
+            }
+            if (s.isAdmin && s.isPlaying) {
+                theaters[s.theater] = { ...theaters[s.theater], isPlaying: true, current: s.current, duration: s.duration };
+            } else if (s.isAdmin)
+                theaters[s.theater] = { ...theaters[s.theater], isPlaying: false, current: s.current, duration: s.duration };
+        })
+
+        socket.emit('theaters', JSON.stringify(theaters));
 
     });
 
     const MovieIo = io.of('/movie');
 
-    MovieIo.use(async (socket, next) => validate(socket, next, user));
-    MovieIo.isPlaying = false;
-    let timePlaying = 0;
+    MovieIo.use(async (socket, next) => validate(socket, next));
+
+
     MovieIo.on('connection', (socket) => {
 
-        socket.emit('isAdmin', socket.isAdmin, MovieIo.isPlaying);
+        socket.emit('isAdmin', socket.isAdmin, socket.isPlaying);
 
         if (socket.isAdmin) {
+            socket.on('handle change', (url) => {
+                socket.broadcast.emit('handle change', url);
+            })
             socket.on('handle preview', () => {
-                socket.broadcast.emit('handle preview', timePlaying);
+                socket.current = 0;
+                socket.broadcast.emit('handle preview', socket.current);
             })
             socket.on('handle pause', () => {
-                MovieIo.isPlaying = false;
-                socket.broadcast.emit('handle pause', timePlaying, MovieIo.isPlaying);
+                socket.isPlaying = false;
+                socket.broadcast.emit('handle pause', socket.current, socket.isPlaying);
             })
             socket.on('handle play', () => {
-                MovieIo.isPlaying = true;
-                socket.broadcast.emit('handle play', timePlaying, MovieIo.isPlaying);
+                socket.isPlaying = true;
+                socket.broadcast.emit('handle play', socket.current, socket.isPlaying);
             })
             socket.on('handle ended', () => {
-                MovieIo.isPlaying = false;
-                socket.broadcast.emit('handle ended', timePlaying);
+                socket.isPlaying = false;
+                socket.broadcast.emit('handle ended', socket.current);
             })
             socket.on('handle progress', (progress) => {
-                timePlaying = progress.playedSeconds;
+                socket.current = progress.playedSeconds;
                 socket.broadcast.emit('handle progress', progress);
             })
             socket.on('handle duration', (duration) => {
+                socket.duration = duration;
                 socket.broadcast.emit('handle duration', duration);
             })
             socket.on('disconnect', async () => {
-                MovieIo.isPlaying = false;
-                socket.broadcast.emit('handle pause', timePlaying);
+                socket.isPlaying = false;
+                socket.broadcast.emit('handle pause', socket.current);
             })
         }
 
     });
 
-    const pollIo = io.of('/main');
+    const pollIo = io.of('/poll');
 
-    pollIo.use(async (socket, next) => validate(socket, next, user));
+    pollIo.use(async (socket, next) => validate(socket, next));
 
     pollIo.on('connection', (socket) => {
 
@@ -123,24 +133,25 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
 
     const theaterIo = io.of('/theater');
 
-    theaterIo.use(async (socket, next) => validate(socket, next, user));
+    theaterIo.use(async (socket, next) => validate(socket, next));
 
     theaterIo.on('connection', async (socket) => {
 
         socket.to(socket.theater).emit('receive message', `${socket.name} Joined room ${socket.theater}`);
 
-        const users = await theaterIo.fetchSockets();
-
-        const filterUsers = users.map(user => {
-            return {
-                name: user.name,
-                image: user.image,
-                id: user._id
-            }
+        socket.on('fetch users', async () => {
+            const users = await theaterIo.fetchSockets();
+            const usersOn = users.map(user => {
+                if (user._id !== socket._id)
+                    return {
+                        name: user.name,
+                        image: user.image,
+                        id: user._id
+                    }
+            })
+            if (socket.isAdmin)
+                socket.emit('receive users', usersOn);
         })
-
-        socket.to(socket.theater).emit('fetch users', filterUsers);
-
         logger.info(`admin ${socket._id} connected`);
 
         socket.to(socket.theater).emit("connected", socket._id);
@@ -149,12 +160,18 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
             if (socket.isAdmin) {
                 const users = await theaterIo.fetchSockets();
                 const user = users.find((socket: any) => socket._id === id) as any;
+                let blocked;
                 if (user) {
-                    let blocked = await axios.put(`http://proxy/theater/${user._id}`, {}, {
-                        headers: {
-                            'Authorization': 'Bearer ' + socket.handshake.auth.token
-                        }
-                    });
+                    try {
+                        blocked = await axios.get(`http://proxy/theater/block/${user._id}`, {
+                            headers: {
+                                'Authorization': 'Bearer ' + socket.handshake.auth.token
+                            }
+                        });
+                    } catch (error) {
+                        logger.error(error)
+                    }
+
                     logger.error(blocked.data.message)
                     user.disconnect();
                 }
@@ -197,7 +214,6 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
                 }
             })
             socket.to(socket.theater).emit('fetch users', filterUsers);
-            user[socket.theater]--;
             theaterIo.to(socket.theater).emit('receive message', `${socket.name} left room ${socket.theater}`);
             logger.error('user disconnected');
         })

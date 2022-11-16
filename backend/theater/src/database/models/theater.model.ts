@@ -5,8 +5,10 @@ export interface UserInput {
     name: string,
     showing: {
         _id?: string,
-        title: string,
-        poster: string,
+        name: string,
+        url: string,
+        duration: string,
+        image: string,
         description: string,
     },
     polls: [{
@@ -21,11 +23,13 @@ export interface UserInput {
     playlist: [{
         _id?: string,
         name: string,
-        video: string,
-        current?:boolean,
+        url: string,
+        current: boolean,
+        duration: string,
+        image: string,
         description: string,
     }],
-    blockedList: [ string ]
+    blockedList: [string]
 }
 
 
@@ -49,14 +53,15 @@ const theaterSchema = new mongoose.Schema(
         adminId: { type: String },
         name: { type: String, required: true },
         showing: {
-            title: { type: String, required: true },
+            name: { type: String },
             duration: { type: String },
-            image: { type: String, required: true },
-            description: { type: String, required: true },
+            url: { type: String },
+            image: { type: String },
+            description: { type: String },
         },
         playlist: [{
             name: { type: String },
-            video: { type: String },
+            url: { type: String },
             image: { type: String },
             duration: { type: String },
             current: { type: Boolean, default: false },

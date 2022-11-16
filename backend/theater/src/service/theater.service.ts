@@ -9,14 +9,15 @@ export const createTheater = async (input: any, _id: string) => {
         const theater = new TheaterModel;
         theater.name = input.name;
         theater.adminId = _id;
-        theater.showing.title = input.uploadedFiles[0].name;
+        theater.showing.name = input.uploadedFiles[0].name;
+        theater.showing.url = input.uploadedFiles[0].url;
         theater.showing.image = input.uploadedFiles[0].image;
         theater.showing.duration = input.uploadedFiles[0].duration;
         theater.showing.description = input.uploadedFiles[0].description;
         Object.values(input.uploadedFiles)?.map((file: any) => {
-            theater.playlist = file;
+            theater.playlist.push(file);
         })
-
+        console.log(theater.playlist)
         return await theater.save();
     } catch (e) {
         throw new Error(e);
