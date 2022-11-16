@@ -7,10 +7,10 @@ export const createTheaterSchema = object({
     }),
     adminId: string(),
     showing: object({
-      title: string({
+      name: string({
         required_error: "Title is required",
       }),
-      poster: string({
+      image: string({
         required_error: "Poster is required",
       }),
       description: string({
@@ -27,6 +27,9 @@ export const createUserTheaterSchema = object({
     }),
     uploadedFiles: object({
       name: string({
+        required_error: "Title is required",
+      }),
+      url: string({
         required_error: "Title is required",
       }),
       image: string({
