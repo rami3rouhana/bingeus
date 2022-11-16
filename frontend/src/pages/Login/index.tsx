@@ -1,9 +1,19 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { GlobalStateContext } from "../../context/GlobalState";
 
 const LoginPage = () => {
     const userInfo = useContext(GlobalStateContext);
-
+    const navigate = useNavigate();
+    const auth: any = async () => {
+        await userInfo.auth();
+        if (userInfo.user.loggedIn) {
+            navigate('/');
+        }
+    };
+    useEffect(() => {
+        auth();
+    })
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
