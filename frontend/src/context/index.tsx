@@ -53,6 +53,7 @@ export const initialState: UserStateInterface = {
   id: '',
   name: '',
   email: '',
+  currentTheater:'',
   image: '',
   blockedList:[],
   theaters: [],
