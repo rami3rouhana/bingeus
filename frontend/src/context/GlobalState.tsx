@@ -3,7 +3,7 @@ import { setupInterceptorsTo } from "../components/Interceptors";
 import Reducer from './reducer'
 import axios from 'axios'
 setupInterceptorsTo(axios);
-const user = { id: '', name: '', image: '', email: '', blockedList: [], theaters: [], allTheaters: [], loggedIn: false, jwt: '' };
+const user = { id: '', name: '', image: '', currentTheater: '', email: '', blockedList: [], theaters: [], allTheaters: [], loggedIn: false, jwt: '' };
 const intialeState = {
   user,
   error: null,
@@ -14,6 +14,7 @@ export interface GlobalStateInterface {
   name: string,
   email: string,
   loggedIn: boolean,
+  currentTheater: string,
   blockedList: object[],
   allTheaters: object[],
   theaters: object[],
