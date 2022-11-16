@@ -5,7 +5,7 @@ import Users from "../../sidebar/Users";
 import Poll from "../../sidebar/Poll";
 import Playlist from "../../sidebar/Playlist";
 
-const SideBar = ({ chatSocket, pollSocket }) => {
+const SideBar = ({ chatSocket, movieSocket, playlist, setUrl }) => {
     const userInfo = useContext(GlobalStateContext);
     const buttons = [`Chat`, `Users`, `Poll`, `Playlist`, `Lock`]
     const [show, setShow] = useState<string>(`Chat`)
@@ -29,7 +29,7 @@ const SideBar = ({ chatSocket, pollSocket }) => {
             <Users socket={chatSocket} show={show} />
             <Chat socket={chatSocket} show={show} />
             <Poll chatSocket={chatSocket} show={show} />
-            <Playlist socket={chatSocket} show={show} />
+            <Playlist playlist={playlist} setUrl={setUrl} movieSocket={movieSocket} show={show} />
         </div>
     )
 }
