@@ -28,14 +28,14 @@ const StyledPlayerOverlay = styled('div') <ReactPlayerProps>`
 `;
 
 const PlayerOverlay: React.FC<ReactPlayerProps> = (props) => {
-  const { state } = props;
+  const { state, name } = props;
 
   return (
     <StyledPlayerOverlay state={state}>
       <Box className={'video-player__overlay-inner'}>
         <Fade in>
           <Typography variant="h4" color={'white'} mt={2}>
-            Lost in Japan
+            {name}
           </Typography>
         </Fade>
       </Box>
