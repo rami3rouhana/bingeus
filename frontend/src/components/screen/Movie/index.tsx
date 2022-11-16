@@ -1,17 +1,14 @@
 import { Grid } from "@mui/material";
 import VideoPlayer from "../../player/VideoPlayer";
 
-const Movie = ({ movieSocket }) => {
+const Movie = ({ movieSocket, image, url, name,setUrl}) => {
     return (
-
         <VideoPlayer
-            url={
-                'http://localhost/theater/video/video1.mp4'
-            }
-            light={
-                'https://m.media-amazon.com/images/M/MV5BNDVkYjU0MzctMWRmZi00NTkxLTgwZWEtOWVhYjZlYjllYmU4XkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg'
-            }
+            url={`http://localhost/theater/video/${url}`}
+            light={image}
             movieSocket={movieSocket}
+            name={name}
+            setUrl={setUrl}
         />
     );
 };

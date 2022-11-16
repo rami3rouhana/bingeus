@@ -44,7 +44,6 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
       };
     case 'ADD_THEATER':
       user.theaters = [...user.theaters, action.payload];
-      debugger
       return {
         ...state,
         user: user,

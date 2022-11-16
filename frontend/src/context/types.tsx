@@ -6,6 +6,7 @@ export interface UserStateInterface {
   image?: string,
   loggedIn: boolean,
   blockedList:object[],
+  currentTheater:string,
   theaters: object[],
   allTheaters: object[],
   email?: string,

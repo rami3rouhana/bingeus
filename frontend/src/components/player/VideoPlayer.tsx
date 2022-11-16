@@ -35,7 +35,7 @@ const StyledPlayer = styled('div') <ReactPlayerProps>`
 `;
 
 export const VideoPlayer: React.FC<any> = (props) => {
-  const { url, light, movieSocket } = props;
+  const { url, light, movieSocket, name, setUrl } = props;
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [state, dispatch] = React.useReducer(reducer, INITIAL_STATE);
@@ -50,21 +50,14 @@ export const VideoPlayer: React.FC<any> = (props) => {
         setIsPlaying(playing);
       })
 
-      movieSocket.on('handle preview', (duration) => handlePreview(duration))
-      movieSocket.on('handle pause', (duration, playing) => { handlePause(duration, playing) })
-      movieSocket.on('handle play', (duration, playing) => { handlePlay(duration, playing) })
-      movieSocket.on('handle ended', handleEnded)
-      movieSocket.on('handle progress', handleProgress)
-      movieSocket.on('handle duration', handleDuration)
+      movieSocket.on('handle change', (url) => setUrl(url));
+      movieSocket.on('handle preview', (duration) => handlePreview(duration));
+      movieSocket.on('handle pause', (duration, playing) => { handlePause(duration, playing) });
+      movieSocket.on('handle play', (duration, playing) => { handlePlay(duration, playing) });
+      movieSocket.on('handle ended', handleEnded);
+      movieSocket.on('handle progress', handleProgress);
+      movieSocket.on('handle duration', handleDuration);
     })
-
-  useEffect(() => {
-    if (movieSocket)
-      if (!isAdmin) {
-        if (!isPlaying) {
-        };
-      }
-  }, [isAdmin, isPlaying])
 
   const handlePreview = (duration?: number) => {
     handlePlay();
@@ -163,7 +156,7 @@ export const VideoPlayer: React.FC<any> = (props) => {
         onProgress={handleProgress}
         onClickPreview={handlePreview}
       />
-      <PlayerOverlay state={state} />
+      <PlayerOverlay state={state} name={name} />
       {!state.controls && !state.light && (
         <PlayerControls state={state} dispatch={dispatch} playerRef={playerRef} wrapperRef={wrapperRef} isAdmin={isAdmin} />
       )}

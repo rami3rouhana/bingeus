@@ -4,7 +4,7 @@ import { EditText } from "react-edit-text";
 import ReactDom from "react-dom";
 import { GlobalStateContext } from "../../context/GlobalState";
 
-const chunkSize = 10 * 1024;
+const chunkSize = 100 * 1024;
 
 const TheaterAdd = ({ setShowModal }) => {
 
@@ -62,7 +62,8 @@ const TheaterAdd = ({ setShowModal }) => {
                         const uploadedFiles = {};
                         files.map((file: any, index: number) => {
                             uploadedFiles[index] = {
-                                name: file.finalFilename,
+                                name: file.realName,
+                                url: file.finalFilename,
                                 image: file.image,
                                 duration: file.timeLength,
                                 description: file.plot,
