@@ -7,7 +7,7 @@ const INITIAL_STATE: ReactPlayerProps = {
   playing: false,
   controls: false,
   volume: 0.8,
-  light: true,
+  light: false,
   progress: {
     playedSeconds: 0,
   },
