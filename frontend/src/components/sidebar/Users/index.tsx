@@ -4,10 +4,17 @@ import { useContext, useState, useRef, useEffect } from 'react';
 const Users = ({ socket, show }) => {
     const userInfo = useContext(GlobalStateContext);
     const [users, setUsers] = useState([]);
-    socket?.on('fetch users', (msg) => {
-        setUsers(msg)
-    });
 
+    socket?.on('connect', () => {
+        socket?.emit('fetch users');
+        socket?.on('receive users', (users) => {
+            setUsers(users);
+        })
+    })
+
+    socket?.on('receive users', (users) => {
+        setUsers(users);
+    })
 
     return (
         <>
@@ -17,7 +24,8 @@ const Users = ({ socket, show }) => {
                         <ul>
                             {
                                 users?.map((user: any) => {
-                                    return <li key={Math.random()}>{user.name}</li>
+                                    if (user !== null)
+                                        return (<li key={Math.random()}>{user.name}<button onClick={(e: any) => { socket?.emit('block', user.id); e.currentTarget.parentElement.remove() }}>block</button></li>)
                                 })
                             }
                         </ul>
