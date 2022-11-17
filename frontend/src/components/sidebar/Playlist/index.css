@@ -1,0 +1,14 @@
+.playlist-img{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.playlist-movies{
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-top: 8px;
+    background: rgba(41, 126, 241, 0.37);
+    justify-content: space-around;
+}
