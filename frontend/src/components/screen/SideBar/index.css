@@ -13,3 +13,15 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.theater-buttons {
+    border: 0px;
+    background-color: transparent;
+}
+
+.theater-btns{
+    border: 0px;
+    display: flex;
+    background: #020C24;
+    justify-content: space-around;
+}
