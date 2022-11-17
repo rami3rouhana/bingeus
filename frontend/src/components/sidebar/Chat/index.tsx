@@ -1,6 +1,7 @@
 import { GlobalStateContext } from "../../../context/GlobalState";
 import { useContext, useState, useRef } from 'react';
 import './index.css';
+import SendButton from '../../assets/SendButton.svg';
 
 const Chat = ({ socket, show }) => {
     const [message, setMessage] = useState<string>('');
@@ -45,8 +46,8 @@ const Chat = ({ socket, show }) => {
                         </ul>
 
                         <div>
-                            <input type='text' placeholder="Message" value={message} onChange={(e) => { setMessage(e.target.value) }} />
-                            <button onClick={handleSendMessage}>Send Message</button>
+                            <input className="chat-input" type='text' placeholder="Message" value={message} onChange={(e) => { setMessage(e.target.value) }} />
+                            <button className="send-message" onClick={handleSendMessage}><img src={SendButton} /></button>
                         </div>
                     </>
                     : false
