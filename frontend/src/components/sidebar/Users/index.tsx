@@ -25,7 +25,7 @@ const Users = ({ socket, show }) => {
                             {
                                 users?.map((user: any) => {
                                     if (user !== null)
-                                        return (<li key={Math.random()}>{user.name}<button onClick={(e: any) => { socket?.emit('block', user.id); e.currentTarget.parentElement.remove() }}>block</button></li>)
+                                        return (<li key={Math.random()}><img src={`http://localhost/image/${user.image}`}/>{user.name}<button onClick={(e: any) => { socket?.emit('block', user.id); e.currentTarget.parentElement.remove() }}>block</button></li>)
                                 })
                             }
                         </ul>
