@@ -1,5 +1,7 @@
 import { GlobalStateContext } from "../../../context/GlobalState";
 import { useContext, useState, useRef, useEffect } from 'react';
+import './index.css';
+import Block from '../../assets/Block.svg';
 
 const Users = ({ socket, show }) => {
     const userInfo = useContext(GlobalStateContext);
@@ -25,7 +27,7 @@ const Users = ({ socket, show }) => {
                             {
                                 users?.map((user: any) => {
                                     if (user !== null)
-                                        return (<li key={Math.random()}><img src={`http://localhost/image/${user.image}`}/>{user.name}<button onClick={(e: any) => { socket?.emit('block', user.id); e.currentTarget.parentElement.remove() }}>block</button></li>)
+                                        return (<li key={Math.random()}><img className="user-img" src={`http://localhost/image/${user.image}`} />{user.name}<button className="block-button" onClick={(e: any) => { socket?.emit('block', user.id); e.currentTarget.parentElement.remove() }}><img src={Block} /></button></li>)
                                 })
                             }
                         </ul>
