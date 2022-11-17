@@ -4,7 +4,7 @@ import io, { Socket } from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
 import Movie from "../../components/screen/Movie";
 import SideBar from "../../components/screen/SideBar";
-
+import './index.css';
 
 const TheaterPage: () => ReactElement<any, any> = () => {
     const userInfo = useContext(GlobalStateContext);
@@ -60,10 +60,10 @@ const TheaterPage: () => ReactElement<any, any> = () => {
 
 
     return (
-        <>
+        <div className="theater-main">
             <Movie movieSocket={movieSocket} image={location.state.image} url={url} name={location.state.name} setUrl={setUrl} />
             <SideBar chatSocket={chatSocket} movieSocket={movieSocket} playlist={location.state.playlist} setUrl={setUrl} />
-        </>
+        </div>
     )
 }
 export default TheaterPage;

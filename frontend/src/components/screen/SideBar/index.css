@@ -1,0 +1,27 @@
+.side-bar {
+    box-sizing: border-box;
+    position: absolute;
+    width: 323px;
+    height: 852px;
+    top: 0;
+    right: 0;
+    background: rgba(59, 65, 73, 0.31);
+    mix-blend-mode: normal;
+    backdrop-filter: blur(4px);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.theater-buttons {
+    border: 0px;
+    background-color: transparent;
+}
+
+.theater-btns{
+    border: 0px;
+    display: flex;
+    background: #020C24;
+    justify-content: space-around;
+}

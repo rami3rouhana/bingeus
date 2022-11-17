@@ -42,7 +42,7 @@ export const VideoPlayer: React.FC<any> = (props) => {
   const playerRef = React.useRef<ReactPlayer>(null);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const STATE = state as any;
-  console.log(STATE)
+
   if (movieSocket)
     movieSocket.on('connect', () => {
       movieSocket.on('isAdmin', (admin, playing) => {
