@@ -4,7 +4,7 @@ import Chat from "../../sidebar/Chat";
 import Users from "../../sidebar/Users";
 import Poll from "../../sidebar/Poll";
 import Playlist from "../../sidebar/Playlist";
-
+import './index.css'
 const SideBar = ({ chatSocket, movieSocket, playlist, setUrl }) => {
     const userInfo = useContext(GlobalStateContext);
     const buttons = [`Chat`, `Users`, `Poll`, `Playlist`, `Lock`]
@@ -17,7 +17,7 @@ const SideBar = ({ chatSocket, movieSocket, playlist, setUrl }) => {
     }
 
     return (
-        <div>
+        <div className="side-bar">
             <div className="theater-btns">
                 {
                     userInfo.user.loggedIn ?
