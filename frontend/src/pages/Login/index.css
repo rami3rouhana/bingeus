@@ -1,0 +1,116 @@
+.login-signin{
+    min-height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+.login-signin .left-pannel{
+    min-width: 70vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.left-pannel{
+    min-width: 70vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-signin .right-pannel{
+    background-color: black;
+    min-width: 30vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px 0px 0px 100px;
+}
+
+.login-div-container .input{
+    padding: 16px 20px;
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    border-radius: 10px;
+    line-height: normal;
+    resize: none;
+    background-color: #ffffff;
+    min-width: 300px;
+    margin-bottom: 20px;
+}
+
+.login-div-container button{
+    padding: 16px 28px;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: .2em;
+    font-weight: 500;
+    font-style: normal;
+    background-color: #0f0f0f;
+    width: 300px;
+    border-radius: 100px;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+.login-div-container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.login-title,.login-message span{
+    padding: 16px 28px;
+    text-transform: uppercase;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: .2em;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.login-message span{
+    font-size: 30px;
+}
+
+.signup-link{
+    margin-top: 15px;
+}
+
+.signup-link-right{
+    color: #FF0000
+}
+
+.login-signin .right-pannel .right-pannel-hero-span{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 36px;
+    text-align: center;
+    color: white;
+    max-width: 80%;
+}
+
+.user-quote{
+    margin-top: 20px;
+}
+
+.user-quote span{
+    color: white;
+}
+
+.login-div-container form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
