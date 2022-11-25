@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
-    if (config.baseURL === "http://localhost:80") {
+    if (config.baseURL === process.env.REACT_APP_API_BASE_URL as string) {
         const token = localStorage.getItem('token');
         config.headers ? config.headers.Authorization = `Bearer ${token}` : console.log('error');
     }
@@ -25,7 +24,7 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
 }
 
 export const setupInterceptorsTo = (axiosInstance: AxiosInstance): AxiosInstance => {
-    axios.defaults.baseURL = "http://localhost:80";
+    axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL as string;
     axiosInstance.interceptors.request.use(onRequest, onRequestError);
     axiosInstance.interceptors.response.use(onResponse, onResponseError);
     return axiosInstance;
