@@ -59,7 +59,8 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
         ...state,
         error: action.payload,
       };
-    case 'PURGE_STATE':
+    case 'LOGOUT':
+      localStorage.removeItem('token');
       return initialState;
     default:
       return state;
