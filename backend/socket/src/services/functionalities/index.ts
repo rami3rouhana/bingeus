@@ -137,7 +137,19 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
 
     theaterIo.on('connection', async (socket) => {
 
-        socket.to(socket.theater).emit('receive message', `${socket.name} Joined room ${socket.theater}`);
+        socket.to(socket.theater).emit('user join', `${socket.name} joined the room`);
+
+        socket.emit('receive users', async () => {
+            const users = await theaterIo.fetchSockets();
+            const usersOn = users.map(user => {
+                if (user._id !== socket._id)
+                    return {
+                        name: user.name,
+                        image: user.image,
+                        id: user._id
+                    }
+            })
+        });
 
         socket.on('fetch users', async () => {
             const users = await theaterIo.fetchSockets();
@@ -179,13 +191,12 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
         })
 
         socket.on('chat message', (msg: string) => {
-
             if (socket.theater.length === 0) {
                 socket.broadcast.emit('receive message', msg);
             }
 
             if (socket._id)
-                theaterIo.to(socket.theater).emit('receive message', msg);
+                theaterIo.to(socket.theater).emit('receive message', { msg, name: socket.name, id: socket._id });
 
         });
 
@@ -214,7 +225,7 @@ export default async (app: Express, io: Server<any, any, any, any>, channel: Cha
                 }
             })
             socket.to(socket.theater).emit('fetch users', filterUsers);
-            theaterIo.to(socket.theater).emit('receive message', `${socket.name} left room ${socket.theater}`);
+            theaterIo.to(socket.theater).emit('user join', `${socket.name} left the room`);
             logger.error('user disconnected');
         })
     });

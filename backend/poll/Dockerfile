@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8004
+EXPOSE ${POLL_PORT}
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]

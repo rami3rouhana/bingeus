@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8001
+EXPOSE ${USER_PORT}
 
 CMD ["npm", "start"]
