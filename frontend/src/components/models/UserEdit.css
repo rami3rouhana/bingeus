@@ -1,0 +1,53 @@
+.container {
+    position: absolute;
+    width: 498px;
+    height: 400px;
+    left: 523px;
+    top: 128px;
+    padding-top: 50px;
+    background: #091E40;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-radius: 23px;
+}
+
+.edit-profile-container {
+    background: #103671;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    height: 50px;
+    margin: -21px 0px 22px 0px;
+    color: white;
+    align-items: center;
+    height: 30px;
+    width: 350px;
+    margin-bottom: 30px;
+}
+
+.title {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-content: space-between;
+    align-items: stretch;
+}
+
+.title h1 {
+    margin: 0px 130px;
+    padding-bottom: 30px;
+    margin-top: -40px;
+}
+
+.model-on {
+    pointer-events: none;
+    cursor: none;
+    filter: blur(5px);
+    overflow: hidden !important;
+  }
+  
+  .body-overflow{
+    overflow-y: hidden;
+  }
