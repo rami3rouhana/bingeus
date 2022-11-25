@@ -1,0 +1,26 @@
+#signup-page{
+    flex-direction: row-reverse;
+}
+
+#signup-page-bg{
+    border-radius: 0px 100px 100px 0px;
+    background-color: #0b1534;
+}
+
+#signup-page-color{
+    color: #297EF1;
+}
+
+#signup-page-btn{
+    background-color: #297EF1;
+}
+
+.user-quote{
+    display: flex;
+    align-items: center;
+}
+
+.user-quote img{
+    width: 50px;
+    margin-right: 10px;
+}
