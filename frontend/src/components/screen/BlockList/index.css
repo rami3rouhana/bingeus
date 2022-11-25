@@ -1,0 +1,40 @@
+.blocked-list {
+    background: #020C24;
+}
+
+.block-title {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: 30px;
+}
+
+.blocked-list-profile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.blocked-list {
+    width: 100%;
+    margin: 0px;
+}
+
+.blocked-list button{
+    background-color: transparent;
+    border: 0;
+}
+
+.blocked-list button img{
+    width: 15px;
+}
+
+.blocked-list img{
+    width: 50px;
+}
+
+.blocked-list li span{
+    font-size: 15px;
+}
