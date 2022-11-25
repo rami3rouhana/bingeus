@@ -12,7 +12,9 @@ import { INITIAL_STATE, reducer } from './Player.reducer';
 const StyledPlayer = styled('div') <ReactPlayerProps>`
   position: relative;
   aspect-ratio: 16/9;
-
+  height: 700px;
+  width: 100%;
+  
   // defined from script, if props light is true then is visible
   .react-player__preview:before {
     content: '';
@@ -128,7 +130,7 @@ export const VideoPlayer: React.FC<any> = (props) => {
   };
 
   return (
-    <StyledPlayer state={state} ref={wrapperRef}>
+    <StyledPlayer className='theater-movie' state={state} ref={wrapperRef}>
       <ReactPlayer
         ref={playerRef}
         url={url}
