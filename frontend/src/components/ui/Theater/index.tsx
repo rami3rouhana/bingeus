@@ -1,26 +1,23 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GlobalStateContext } from '../../../context/GlobalState';
 import './index.css';
 import playButton from '../../assets/playButton.png';
+import TheaterDisplay from '../../models/TheaterDisplay';
 
-const Theater = ({ theater }) => {
+const Theater = ({ theater, online }) => {
     const userInfo = useContext(GlobalStateContext);
-    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
     return (
-        <div className='theater-display' style={{ backgroundImage: `url(${theater.showing.image})` }} onClick={() => {
-            navigate('/theater', {
-                state: {
-                    theaterId: theater._id,
-                    url: theater.showing.url,
-                    name: theater.showing.name,
-                    image: theater.showing.image,
-                    playlist: theater.playlist
-                }
-            })
-        }}>
-            <div className='theater-banner'><img src={playButton} /><span>{theater.showing.name}</span><span>{theater.showing.duration}</span></div>
-        </div>
+        <>
+            {online ?
+                <div className='theater-display-online' onClick={() => { setShowModal(true); window.scrollTo(0, 0); }} style={{ backgroundImage: `url(${theater.showing.image})` }} >
+                    <div className='theater-banner-online'><img src={playButton} /><span>{theater.showing.name}</span><span>{theater.showing.duration}</span></div> </div> :
+                <div className='theater-display' onClick={() => { setShowModal(true); window.scrollTo(0, 0); }} style={{ backgroundImage: `url(${theater.showing.image})` }} >
+                    <div className='theater-banner'><img src={playButton} /><span>{theater.showing.name}</span><span>{theater.showing.duration}</span></div></div>
+            }
+            {showModal ? <TheaterDisplay theater={theater} setShowModal={setShowModal} /> : null}
+        </>
     )
 }
 
