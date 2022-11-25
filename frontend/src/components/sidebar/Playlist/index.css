@@ -10,5 +10,5 @@
     color: white;
     margin-top: 8px;
     background: rgba(41, 126, 241, 0.37);
-    justify-content: space-around;
+    justify-content: flex-start;
 }
