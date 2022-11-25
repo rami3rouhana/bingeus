@@ -3,6 +3,7 @@ import { useContext, useRef, useState } from 'react';
 import ReactDom from "react-dom";
 import { EditText } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
+import './UserEdit.css';
 
 
 const UserEdit = ({ setShowModal }) => {
@@ -23,34 +24,39 @@ const UserEdit = ({ setShowModal }) => {
         if (name.changed === false && email.changed === false && password.changed === false)
             return console.log(Error('Nothing Changed'))
         await userInfo.editUser(name, email, password);
+        blur.classList.remove('model-on');
+        document.body.classList.remove('body-overflow');
         setShowModal(false);
     }
 
+    const blur = document.getElementsByClassName('profile-page')[0];
+    document.body.classList.add('body-overflow');
+    blur.classList.add('model-on');
 
     return ReactDom.createPortal(
         <div className="container" ref={modalRef} onClick={(e) => e.target === modalRef.current && setShowModal(false)}>
             <div className="modal">
-                <button onClick={() => setShowModal(false)}>X</button>
-                <EditText showEditButton defaultValue={name.value} onSave={(e) => {
+                <div className="title"><h1>Edit Profile</h1><button className="close-button" onClick={() => { setShowModal(false); blur.classList.remove('model-on'); document.body.classList.remove('body-overflow'); }}>X</button></div>
+                <EditText className="edit-profile-container" inputClassName="edit-profile-container" defaultValue={name.value} onSave={(e) => {
                     e.value !== userInfo.user.name ?
                         changed = true :
                         changed = false;
                     setName({ value: e.value, changed: changed })
                 }} />
-                <EditText showEditButton defaultValue={email.value} onSave={(e) => {
+                <EditText className="edit-profile-container" inputClassName="edit-profile-container" defaultValue={email.value} onSave={(e) => {
                     e.value !== userInfo.user.email ?
                         changed = true :
                         changed = false;
                     setEmail({ value: e.value, changed: true })
                 }} />
-                <EditText showEditButton placeholder='Password' onSave={(e) => {
+                <EditText className="edit-profile-container" inputClassName="edit-profile-container" placeholder='Password' onSave={(e) => {
                     e.value.length >= 6 ?
                         setPassword({ value: e.value, changed: true }) :
                         console.log(Error('Must be greater then 6 characters'))
                 }}
                     formatDisplayText={(e) => { return '*'.repeat(e.length) }} />
-                <EditText showEditButton placeholder='Confirm Password' onSave={(e) => { setConfirmPassword(e.value) }} formatDisplayText={(e) => { return '*'.repeat(e.length) }} />
-                <button onClick={handleEditProfile}>Save Changes</button>
+                <EditText className="edit-profile-container" inputClassName="edit-profile-container" placeholder='Confirm Password' onSave={(e) => { setConfirmPassword(e.value) }} formatDisplayText={(e) => { return '*'.repeat(e.length) }} />
+                <button className="user-edit-btn" onClick={handleEditProfile}>Save Changes</button>
             </div>
         </div>,
         document.getElementById("user-edit") as HTMLElement
