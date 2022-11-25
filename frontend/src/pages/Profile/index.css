@@ -1,0 +1,47 @@
+.page-logo {
+    width: 97px;
+    height: 97px;
+    padding-right: 130px;
+    padding-top: 20px;
+}
+
+.page-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.profile-theaters {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-info-bar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow-x: scroll;
+    height: 600px;
+    width: 314px;
+    background: rgba(41, 126, 241, 0.37);
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
+    overflow-x: hidden;
+}
+
+.user-info-bar span {
+    margin: 20px;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+.page-content h1{
+    color: white;
+    margin: 40px;
+    margin-bottom: 10px;
+    margin-top: 25px;
+}
