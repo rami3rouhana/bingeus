@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8003
+EXPOSE ${SOCKET_PORT}
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
