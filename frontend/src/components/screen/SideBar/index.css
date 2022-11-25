@@ -2,12 +2,12 @@
     box-sizing: border-box;
     position: absolute;
     width: 323px;
-    height: 852px;
+    height: 700px;
     top: 0;
     right: 0;
     background: rgba(59, 65, 73, 0.31);
     mix-blend-mode: normal;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(15px);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -19,9 +19,25 @@
     background-color: transparent;
 }
 
-.theater-btns{
+.theater-btns {
     border: 0px;
     display: flex;
     background: #020C24;
     justify-content: space-around;
+}
+
+.theater-btns img{
+    width: 40px;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+.block {
+    display: none;
+}
+
+.unhide {
+    opacity: 100%;
 }
