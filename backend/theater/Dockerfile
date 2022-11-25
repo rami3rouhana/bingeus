@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8002
+EXPOSE ${THEATER_PORT}
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
