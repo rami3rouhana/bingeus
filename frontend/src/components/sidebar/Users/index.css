@@ -5,6 +5,7 @@
 
 ul {
     padding: 0;
+    height: 100%;
 }
 
 li {
@@ -13,7 +14,6 @@ li {
     justify-content: space-around;
     align-items: center;
     background: rgba(128, 128, 128, 0.37);
-    border-radius: 10px;
     color: white;
     padding: 2px;
 }
