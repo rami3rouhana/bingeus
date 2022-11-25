@@ -6,28 +6,28 @@ services:
       context: ./user
     container_name: user
     ports:
-      - "8001:8001"
+      - ${USER_PORT}:${USER_PORT}
     restart: always
     volumes:
       - .:/app
       - /app/user/node_modules
     env_file:
-      - ./user/dev.env
-      - ./user/.env
+      - ./dev.env
+      - ./.env
   theater:
     build:
       dockerfile: Dockerfile
       context: ./theater
     container_name: theater
     ports:
-      - "8002:8002"
+      - ${THEATER_PORT}:${THEATER_PORT}
     restart: always
     volumes:
       - .:/app
       - /app/theater/node_modules
     env_file:
-      - ./theater/dev.env
-      - ./theater/.env
+      - ./dev.env
+      - ./.env
 
   socket:
     build:
@@ -35,14 +35,14 @@ services:
       context: ./socket
     container_name: socket
     ports:
-      - "8003:8003"
+      - ${SOCKET_PORT}:${SOCKET_PORT}
     restart: always
     volumes:
       - .:/app
       - /app/socket/node_modules
     env_file:
-      - ./socket/dev.env
-      - ./socket/.env
+      - ./dev.env
+      - ./.env
 
   poll:
     build:
@@ -50,20 +50,25 @@ services:
       context: ./poll
     container_name: poll
     ports:
-      - "8004:8004"
+      - ${POLL_PORT}:${POLL_PORT}
     restart: always
     volumes:
       - .:/app
       - /app/poll/node_modules
     env_file:
-      - ./poll/dev.env
-      - ./poll/.env
+      - ./dev.env
+      - ./.env
 
   nginx-proxy:
     build:
       dockerfile: Dockerfile
       context: ./proxy
     container_name: proxy
+    environment:
+      - USER_PORT=${USER_PORT}
+      - THEATER_PORT=${THEATER_PORT}
+      - SOCKET_PORT=${SOCKET_PORT}
+      - POLL_PORT=${POLL_PORT}
     depends_on:
       - user
       - theater
