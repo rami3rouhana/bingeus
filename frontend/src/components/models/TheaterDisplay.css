@@ -1,0 +1,79 @@
+.theater-display-container {
+    position: absolute;
+    width: 412px;
+    height: 519px;
+    left: 587px;
+    top: 43px;
+    padding-top: 50px;
+    background: #091E40;
+    background-size: cover;
+    backdrop-filter: blur(8px);
+    border-radius: 23px;
+}
+
+.theater-modal {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    height: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.close-button-theater {
+    margin-top: -36px;
+    position: absolute;
+    margin-left: 370px;
+    font-size: 20px;
+    border: 0;
+    background: transparent;
+    color: white;
+}
+
+.theater-details {
+    background: rgba(41, 126, 241, 0.62);
+    border-radius: 15px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.theater-details span {
+    padding: 20px;
+}
+
+.theater-details-playlist {
+    margin-top: -85px;
+    height: 223px;
+    overflow-y: scroll;
+    margin-bottom: -90px;
+}
+
+.theater-details-playlist::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.theater-details-playlist .playlist-movie {
+    background: rgba(41, 126, 241, 0.5);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px;
+    width: 345px;
+    height: 56px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.theater-display-title{
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0px !important;
+}
