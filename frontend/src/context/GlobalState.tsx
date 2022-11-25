@@ -38,6 +38,7 @@ interface GlobalContext {
   user: GlobalStateInterface,
   login: (data: object) => Promise<void>,
   signup: (data: object) => Promise<void>,
+  logout: () => void,
   auth: () => Promise<void>,
   unblock: (_id: string) => Promise<void>,
   getUserTheaters: () => Promise<void>,
@@ -79,6 +80,12 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
         payload: err
       })
     }
+  }
+
+  const logout = () => {
+    dispatch({
+      type: 'LOGOUT',
+    })
   }
 
   const addTheater = async (data: any) => {
@@ -128,7 +135,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
       if (password?.changed)
         data['password'] = password.value
 
-      await axios.put('profile', data);
+      await axios.patch('profile', data);
 
       dispatch({
         type: 'EDIT_PROFILE',
@@ -227,6 +234,7 @@ export const GlobalStateProvider: React.FC<{ children: React.ReactNode }> = ({
     <GlobalStateContext.Provider value={{
       user,
       login,
+      logout,
       addTheater,
       uploadImage,
       signup,
