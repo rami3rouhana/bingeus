@@ -1,0 +1,113 @@
+.offline-theaters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow-y: scroll;
+    height: 600px;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+}
+
+.online-theaters {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    -ms-overflow-style: none;
+    overflow-x: scroll;
+    justify-content: flex-start;
+    width: 1100px;
+}
+
+.offline-theaters::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.online-theaters::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.top-5-theaters::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+h1 {
+    color: white;
+}
+
+.main-right h1 {
+    margin-left: 50px;
+    padding-bottom: 10px;
+}
+
+.bottom-h1 {
+    padding-top: -10px;
+    margin-bottom: -20px;
+}
+
+.top-5-theaters {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow-x: scroll;
+    height: 600px;
+    width: 858px;
+    background: rgba(41, 126, 241, 0.37);
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.theaters-page {
+    flex-direction: row;
+    display: flex;
+}
+
+.main-right {
+    margin-top: 13px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.header img{
+    width: 75px;
+    margin-left: 50px;
+}
+
+.header{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.display-user-name{
+    color: white;
+}
+
+.user-display{
+    display: flex;
+    align-items: center;
+    margin-right: 80px;
+}
+
+.user-display img{
+    width: 50px;
+}
+
+.logout-button{
+    width: 30px !important;
+}
+
+.user-profile-header{
+    display: flex;
+    align-items: center;
+}
