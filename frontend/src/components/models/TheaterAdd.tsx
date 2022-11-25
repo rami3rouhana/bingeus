@@ -3,6 +3,8 @@ import axios from "axios";
 import { EditText } from "react-edit-text";
 import ReactDom from "react-dom";
 import { GlobalStateContext } from "../../context/GlobalState";
+import './TheaterAdd.css';
+import { LinearProgress } from "@mui/material";
 
 const chunkSize = 100 * 1024;
 
@@ -75,6 +77,9 @@ const TheaterAdd = ({ setShowModal }) => {
                         }
                         await userInfo.addTheater(data);
                         setShowModal(false);
+                        blur.classList.remove('model-on');
+                        document.body.classList.remove('body-overflow');
+
                     }
                 } else {
                     setCurrentChunkIndex(currentChunkIndex as number + 1);
@@ -115,26 +120,20 @@ const TheaterAdd = ({ setShowModal }) => {
         }
     }, [currentChunkIndex, upload]);
 
+
+    const blur = document.getElementsByClassName('profile-page')[0];
+    document.body.classList.add('body-overflow');
+    blur.classList.add('model-on');
+
+
+
     return ReactDom.createPortal(
-        <div className="container" ref={modalRef} onClick={(e) => e.target === modalRef.current && setShowModal(false)}>
+        <div className="theater-container" ref={modalRef} onClick={(e) => e.target === modalRef.current && setShowModal(false)}>
             <div className="modal">
-                <button onClick={() => setShowModal(false)}>X</button>
-                <EditText showEditButton placeholder="Theater Name" onSave={(e) => {
+                <button className="close-button-upload" onClick={() => { setShowModal(false); blur.classList.remove('model-on'); document.body.classList.remove('body-overflow'); }}>X</button>
+                <EditText className="upload-movie-edit-title" inputClassName="upload-movie-edit-title" placeholder="Theater Name" onSave={(e) => {
                     setName(e.value);
                 }} />
-                <div
-                    onDragOver={e => { setDropzoneActive(true); e.preventDefault(); }}
-                    onDragLeave={e => { setDropzoneActive(false); e.preventDefault(); }}
-                    onDrop={e => handleDrop(e)}
-                    className={"dropzone" + (dropzoneActive ? " active" : "")}>
-                    Drop your files here
-                    <button onClick={() => {
-                        if (verified.length === files.length)
-                            setUpload(true);
-                        else
-                            Error("Verify all the movies")
-                    }}>Upload</button>
-                </div>
                 <div className="files">
                     {files.map((file: any, fileIndex: number) => {
                         let progress = 0;
@@ -151,8 +150,8 @@ const TheaterAdd = ({ setShowModal }) => {
                         }
                         return (
                             <a className="file" target="_blank" key={file.lastModified}>
-                                <EditText showEditButton onSave={async (e) => {
-                                    const movie = await axios.get(`/?apikey=8c589a6b&t=${e.value}`, { baseURL: test });
+                                <EditText className="upload-movie-edit" inputClassName="upload-movie-edit" onSave={async (e) => {
+                                    const movie = await axios.get(`?apikey=${process.env.REACT_APP_API_OMDB_API_KEY}&t=${e.value}`, { baseURL: "http://www.omdbapi.com/" });
                                     if (movie.data.Error)
                                         return Error(movie.data.Error);
                                     setVerified([...verified, fileIndex]);
@@ -161,13 +160,25 @@ const TheaterAdd = ({ setShowModal }) => {
                                     file.timeLength = movie.data.Runtime;
                                     file.realName = movie.data.Title;
                                 }} defaultValue={file.name.split('.')[0]} />
+                                <LinearProgress variant="determinate" value={progress} />
                                 <div className="name">{file.name}</div>
-                                <div className={"progress " + (progress === 100 ? 'done' : '')}
-                                    style={{ width: progress + '%' }}>{progress}%</div>
                             </a>
                         );
                     })}
                 </div>
+                <div
+                    onDragOver={e => { setDropzoneActive(true); e.preventDefault(); }}
+                    onDragLeave={e => { setDropzoneActive(false); e.preventDefault(); }}
+                    onDrop={e => handleDrop(e)}
+                    className={"dropzone" + (dropzoneActive ? " active" : "")}>
+                    Drag and drop your movies
+                </div>
+                <button className="user-video-edit-btn" onClick={() => {
+                    if (verified.length === files.length)
+                        setUpload(true);
+                    else
+                        Error("Verify all the movies")
+                }}>Upload</button>
             </div>
         </div>,
         document.getElementById("theater-add") as HTMLElement
