@@ -92,6 +92,9 @@ Here's a brief high-level overview of the tech stack BingeUs uses:
   npm install npm@latest -g
   ```
 * docker
+   ```sh
+   install docker https://docs.docker.com/desktop/install/windows-install/
+   ```
 
 ### Installation
 
@@ -132,7 +135,7 @@ Here's a brief high-level overview of the tech stack BingeUs uses:
 
     ```
 
-6.Run docker image.
+6. Run docker image.
    ```sh
    docker compose up
    ```
