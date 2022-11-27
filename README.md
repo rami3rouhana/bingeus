@@ -79,19 +79,19 @@ Here's a brief high-level overview of the tech stack BingeUs uses:
 
 > Using the above mentioned tech stacks and the wireframes built with figma, the implementation of the app is shown as below, these are screenshots from the real app
 
-| Signup | Login |
-| -------| ------|
-| <img src="./readme/project-images/signup.png"/> | <img src="./readme/project-gifs/login.gif"/> |
+| Signup | Profile With Blocked User |
+| -------| -------|
+| <img src="./readme/project-images/signup.png"/> | <img src="./readme/project-images/profile-with-blocked-user.png"/> |
 
 
-| Profile With Blocked User | Edit Profile |
-| --------------------------| -------------|
-| <img src="./readme/project-images/profile-with-blocked-user.png"/> | <img src="./readme/project-gifs/edit-profile.gif"/> |
+| Login | Edit Profile |
+| ------| -------------|
+| <img src="./readme/project-gifs/login.gif"/> | <img src="./readme/project-gifs/edit-profile.gif"/> |
 
 
 |  Upload Theater | Joining Theater | Theater Creation |
-| ----------------| ----------------| -----------------|
-|  <img src="./readme/project-gifs/create-theater.gif"/> | <img src="./readme/project-gifs/upload-theater.gif"/> | <img src="./readme/project-gifs/joining-a-theater.gif"/> 
+| ------------| ----------------| ----------------| -----------------|
+| <img src="./readme/project-gifs/add-theater-popup.jpg"/> |  <img src="./readme/project-gifs/create-theater.gif"/> | <img src="./readme/project-gifs/upload-theater.gif"/> | <img src="./readme/project-gifs/joining-a-theater.gif"/> 
 
 
 | Chatting | Block | Theater Users | Theater Playlist |
