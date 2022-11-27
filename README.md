@@ -39,24 +39,24 @@
 > This design was planned before on paper, then moved to Figma app for the fine details.
 Note that i didn't use any styling library or theme, all from scratch and using pure css modules
 
-| Signup | Profile With Blocked User |
-| -------| -------|
-| <img src="./readme/project-images/signup.png"/> | <img src="./readme/project-images/profile-with-blocked-user.png"/> |
+| Login | Signup |
+| ------| -------|
+| <img src="./readme/figma/login.jpg"/> | <img src="./readme/figma/signup.jpg"/> |
 
 
-| Login | Edit Profile |
-| ------| -------------|
-| <img src="./readme/project-gifs/login.gif"/> | <img src="./readme/project-gifs/edit-profile.gif"/> |
+| Landing | Theater Dispaly |
+| --------| ----------------|
+| <img src="./readme/figma/landing.jpg"/> | <img src="./readme/figma/theater-display-popup.jpg"/> |
 
 
-| Add Theater |  Upload Theater | Joining Theater | Theater Creation |
-| ------------| ----------------| ----------------| -----------------|
-| <img src="./readme/project-gifs/add-theater-popup.jpg"/> |  <img src="./readme/project-gifs/create-theater.gif"/> | <img src="./readme/project-gifs/upload-theater.gif"/> | <img src="./readme/project-gifs/joining-a-theater.gif"/> 
+| Profile | Edit Porfile | Add Theater |
+| --------| -------------| ------------|
+| <img src="./readme/figma/profile.jpg"/> | <img src="./readme/figma/edit-profile-popup.jpg"/> | <img src="./readme/figma/add-theater-popup.jpg"/> |
 
 
-| Chatting | Block | Theater Users | Theater Playlist |
-| ---------| ------| --------------| -----------------|
-| <img src="./readme/project-gifs/chatting.gif"/> | <img src="./readme/project-gifs/block.gif"/> | <img src="./readme/figma/theater-with-users.jpg"/> | <img src="./readme/figma/theater-with-playlist.jpg"/> |
+| Theater | Theater Chat | Theater Users | Theater Playlist |
+| --------| -------------| --------------| -----------------|
+| <img src="./readme/figma/theater.jpg"/> | <img src="./readme/figma/theater-with-chat.jpg"/> | <img src="./readme/figma/theater-with-users.jpg"/> | <img src="./readme/figma/theater-with-playlist.jpg"/> |
 
 
 <br><br>
@@ -79,25 +79,24 @@ Here's a brief high-level overview of the tech stack BingeUs uses:
 
 > Using the above mentioned tech stacks and the wireframes built with figma, the implementation of the app is shown as below, these are screenshots from the real app
 
-| Login | Signup |
-| ------| -------|
-| <img src="./readme/animated/login.jpg"/> | <img src="./readme/animated/signup.jpg"/> |
+| Signup | Profile With Blocked User |
+| -------| -------|
+| <img src="./readme/project-images/signup.png"/> | <img src="./readme/project-images/profile-with-blocked-user.png"/> |
 
-| Login | Signup |
-| ------| -------|
-| <img src="./readme/animated/login.jpg"/> | <img src="./readme/animated/signup.jpg"/> |
 
-| Login | Signup |
-| ------| -------|
-| <img src="./readme/animated/login.jpg"/> | <img src="./readme/animated/signup.jpg"/> |
+| Login | Edit Profile |
+| ------| -------------|
+| <img src="./readme/project-gifs/login.gif"/> | <img src="./readme/project-gifs/edit-profile.gif"/> |
 
-| Login | Signup |
-| ------| -------|
-| <img src="./readme/animated/login.jpg"/> | <img src="./readme/animated/signup.jpg"/> |
 
-| Login | Signup |
-| ------| -------|
-| <img src="./readme/animated/login.jpg"/> | <img src="./readme/animated/signup.jpg"/> |
+| Add Theater |  Upload Theater | Joining Theater | Theater Creation |
+| ------------| ----------------| ----------------| -----------------|
+| <img src="./readme/project-gifs/add-theater-popup.jpg"/> |  <img src="./readme/project-gifs/create-theater.gif"/> | <img src="./readme/project-gifs/upload-theater.gif"/> | <img src="./readme/project-gifs/joining-a-theater.gif"/> 
+
+
+| Chatting | Block | Theater Users | Theater Playlist |
+| ---------| ------| --------------| -----------------|
+| <img src="./readme/project-gifs/chatting.gif"/> | <img src="./readme/project-gifs/block.gif"/> | <img src="./readme/figma/theater-with-users.jpg"/> | <img src="./readme/figma/theater-with-playlist.jpg"/> |
 
 
 <br><br>
