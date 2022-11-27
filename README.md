@@ -79,14 +79,14 @@ Here's a brief high-level overview of the tech stack BingeUs uses:
 
 > Using the above mentioned tech stacks and the wireframes built with figma, the implementation of the app is shown as below, these are screenshots from the real app
 
-| Signup | Profile With Blocked User |
-| -------| -------|
-| <img src="./readme/project-images/signup.png"/> | <img src="./readme/project-images/profile-with-blocked-user.png"/> |
+| Signup | Login |
+| -------| ------|
+| <img src="./readme/project-images/signup.png"/> | <img src="./readme/project-gifs/login.gif"/> |
 
 
-| Login | Edit Profile |
-| ------| -------------|
-| <img src="./readme/project-gifs/login.gif"/> | <img src="./readme/project-gifs/edit-profile.gif"/> |
+| Profile With Blocked User | Edit Profile |
+| --------------------------| -------------|
+| <img src="./readme/project-images/profile-with-blocked-user.png"/> | <img src="./readme/project-gifs/edit-profile.gif"/> |
 
 
 |  Upload Theater | Joining Theater | Theater Creation |
