@@ -94,9 +94,14 @@ Here's a brief high-level overview of the tech stack BingeUs uses:
 |  <img src="./readme/project-gifs/create-theater.gif"/> | <img src="./readme/project-gifs/upload-theater.gif"/> | <img src="./readme/project-gifs/joining-a-theater.gif"/> 
 
 
-| Chatting | Block | Theater Users | Theater Playlist |
-| ---------| ------| --------------| -----------------|
-| <img src="./readme/project-gifs/chatting.gif"/> | <img src="./readme/project-gifs/block.gif"/> | <img src="./readme/figma/theater-with-users.jpg"/> | <img src="./readme/figma/theater-with-playlist.jpg"/> |
+| Chatting | Block |
+| ---------| ------|
+| <img src="./readme/project-gifs/chatting.gif"/> | <img src="./readme/project-gifs/block.gif"/> |
+
+
+| Theater Users | Theater Playlist |
+| --------------| -----------------|
+| <img src="./readme/figma/theater-with-users.jpg"/> | <img src="./readme/figma/theater-with-playlist.jpg"/> |
 
 
 <br><br>
